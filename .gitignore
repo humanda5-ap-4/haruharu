@@ -254,3 +254,7 @@ outputs/
 !docs/meetings/*.hwp
 
 *.xlsx merge=ours
+
+#임시파일 제거
+~$*
+*.tmp
