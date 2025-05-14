@@ -252,3 +252,5 @@ outputs/
 !docs/notes/*.txt
 !docs/planning/*.xlsx
 !docs/meetings/*.hwp
+
+*.xlsx merge=ours
