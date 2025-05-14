@@ -248,3 +248,5 @@ outputs/
 # data 폴더에 있는 shared.xlsx는 예외 처리 (Git에 포함)
 !docs/team/team.xlsx
 !docs/notes/프로젝트_관리.xlsx
+!docs/planning/*.xlsx
+!docs/meetings/*.hwp
