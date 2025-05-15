@@ -1,0 +1,50 @@
+<전현준>
+
+1. 주제 : 주식
+
+
+2. 수집할 공공 데이터API
+
+공공데이터포털 금융위원회_주식시세정보 API or 한투API – KRX 주식 시세 제공
+한국예탁결제원 주식·배당 관련 정보 API – 상장 종목, 배당 일정 등
+금융위원회 주식발행정보 API – 발행량, 신주 등 관련 데이터
+Finnhub (uncertainty)
+StockNews API (uncertainty)
+
+3. NLP모델에서 리턴되는 문장형태,
+
+{ 
+  "stock_name": "삼성전자",
+  "ticker": "005930",
+  "current_price": "nn,000", 
+  "price_change": "±0.nn%"
+  "market": "코스피",
+  "last_updated": "2025-05-15 // 30:00"
+}
+
+5. 필요한 자료구조
+| 목적              | 자료구조 형태                       |
+| --------------- | ----------------------------- |
+| 팀원 주제 매핑        | Dictionary  ex{"005930": "삼성전자"} |
+| 공공 데이터 API 목록   | List of Dictionaries          |
+| 챗봇 응답 (NLP 결과)  | JSON / Dictionary             |
+| 의도-개체 구조        | Nested Dictionary             |
+| Entity/구성요소 리스트 | List                          |
+| 데이터 필드 스키마 정의   | Dictionary (Key-Type Mapping) |
+
+6. 필요한 알고리즘,
+NLP모델류(의도분류, 개체명인식, 정보매칭 검색알고리즘, 응답생성알고리즘)
+시세 조회 및 실시간 업데이트 ( 가능할경우)
+뉴스 요약 및 설명 생성
+거래량 및 등락률 조회 (ex. 등락률, 전일대비)
+
+7. DB정보
+col  type   Des
+id	INT, PK	고유 ID
+stock_name	VARCHAR	종목명 (예: 삼성전자)
+ticker	VARCHAR	티커 (예: 005930)
+current_price	FLOAT	현재 주가
+price_change	VARCHAR	전일 대비 등락률 (예: "+1.35%")
+market	VARCHAR	시장 (KOSPI, KOSDAQ 등)
+last_updated	DATETIME	최종 업데이트 시각
+source_api	VARCHAR	데이터 출처 API (ex. 금융위API, 예탁결제원)
