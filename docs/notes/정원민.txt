@@ -1,0 +1,100 @@
+1. 스팀게임 챗봇 만들기
+
+2. 수집할 공공데이터 APIi
+_> steam web api
+
+3. NLP모델에서 리턴되는 문장형태
+할인 게임 정보의 경우
+{ ex)
+"game_name": "스플릿픽션",
+"game_genre":"액션 어드벤처",
+"start_date": "2025-02-23",(출시일)
+"discount_rate":"40%",
+"game_price":"80,000"
+"discounted_price": "48,000"
+}
+게임 정보 조희의 경우
+{ ex)
+"game_name": "피코파크",
+"game_genre": "퍼즐 게임",
+"start_date": "2021-05-07"(출시일),
+"game_price": "1000",
+"game_size": "4GB"
+}
+라이브러리 조회
+{ ex)
+"game_name": "cilization5",
+"game_genre": "전략게임",
+"purchae_data": "2017-08-20"(구매일)
+"play_time": "300h",
+"game_size": "20GB"
+}
+
+4. 구성요소, 변수명 ( intent, entity )
+"intents" :  "할인 게임 조회", "게임 정보 조회", "라이브러리 조회"
+
+"entity": "game_name", "game_genre", "start_date", "game_price", "discount_rate", 
+ "discounted_price", "game_size", "purchae_data", "play_time", "game_size"
+entities = ["game_name", "game_genre", "start_date", "game_price", "discount_rate", "discounted_price", "game_size", "purchae_data", "play_time", "game_size"]
+
+5. 필요한 자료구조
+| 목적              | 자료구조 형태                       |
+| --------------- | ----------------------------- |
+| 팀원 주제 매핑        | Dictionary                    |
+| steam web api정보   | List of Dictionaries          |
+| 챗봇 응답 (NLP 결과)  | JSON / Dictionary             |
+| 의도-개체 구조        | Nested Dictionary             |
+| Entity/구성요소 리스트 | List                          |
+| 데이터 필드 스키마 정의   | Dictionary (Key-Type Mapping) |
+
+6. 필요한 알고리즘,
+NLP모델류(개체명인식, 정보매칭 검색알고리즘, 응답생성알고리즘)
+의도 분류: (transformer 기반 분류기 (SVM, Logistic Regression, Random Forest...)
+개체 추출
+Json/함수 호출 스키마 생성
+
+전체 파이프라인 예시
+flowchart LR
+  A[사용자 발화] --> B{의도 분류}
+  B --> |할인_게임_조회| C[슬롯 추출]
+  B --> |게임_정보_조회| C
+  C --> D[정규화(날짜·금액 포맷 통일)]
+  D --> E[JSON 조립 또는 함수 호출 요청]
+  E --> F[API 호출 및 결과 리턴]
+  F --> G[사용자에게 JSON 또는 자연어로 응답]
+
+7. DB정보
+	1. Users 테이블
+	------------------------------------
+컬럼명  ㅣ  자료형  ㅣ  설명
+id         l  int, pk    l 고유 사용자 ID
+steam_id l varchar(32)   l steamid64(사용자 계정 식별자)
+api_key  l  varchar(64)  l  Steam Web API Key
+created_at l DATETIME l 레코드 생성일시
+
+	2. DiscountedGames 테이블
+-------------------------------------------------------
+컬럼명	         l      자료형	       l      설명
+id	         l      INT, PK      l	             고유 ID
+user_id	         l       INT, FK      l   Users.id (조회 요청 사용자)
+game_name      l	VARCHAR(100) l	게임 이름
+game_genre     l	VARCHAR(50)  l	장르
+release_date     l	DATE	       l     출시일
+discount_rate   l	VARCHAR(10)  l	할인율 (예: 40%)
+original_price    l	INT	       l     원가 (₩단위)
+discounted_price l	INT	       l	할인 후 가격 (₩단위)
+queried_at       l	DATETIME      l	조회 시각
+source_api      l	VARCHAR(50)  l	API 명 (GetOwnedGames 등)
+
+	3. GameInfo 테이블
+------------------------------------------------------
+컬럼명	          자료형	               설명
+id	     ㅣ     INT, PK	         ㅣ     고유 ID
+user_id	      ㅣ     INT, FK	         ㅣ     Users.id
+game_name   ㅣ    VARCHAR(100)  ㅣ	  게임 이름
+game_genre   ㅣ      VARCHAR(50) ㅣ        장르
+purchase_date ㅣ	DATE	        ㅣ        구매/등록 일자
+play_time	       ㅣ     VARCHAR(10) ㅣ	   플레이 시간 (예: 300h)
+game_size      ㅣ	VARCHAR(20)    ㅣ	   용량 (예: 20GB)
+queried_at     ㅣ	DATETIME        ㅣ	   조회 시각
+source_api     ㅣ	VARCHAR(50)   ㅣ	   API 명 (GetOwnedGames)
