@@ -1,0 +1,61 @@
+
+   ▼
+챗봇 응답 생성 및 출력
+
+🔧 구조 설계
+1. matcher.py + parser.py
+이건 그대로 유지해서 intent / entity 추출
+
+2. data_access.py
+추출한 entity 기반으로 DB에서 결과 조회 (예: 날씨, 약국 리스트)
+
+3. llm_generator.py (신규 파일)
+LLM 기반 자연어 응답 생성기
+
+OpenAI API, KoGPT, 또는 HuggingFace의 transformers 모델 사용
+
+matcher.py: TF-IDF + KNN 기반 (추천)
+
+parser.py: 정규식 기반 or spaCy NER 기반
+
+시나리오 JSON 구조 확인 후 통합 전처리 스크립트 제공?
+사용자 입력으로부터 의도(Intent) 및 정보(Entity) 자동 분류
+
+공공데이터(DB)에 저장된 정보를 조회해 결과 제공
+
+Gemini 모델을 통한 자연스러운 응답 생성
+
+다양한 질문 패턴을 학습한 시나리오 기반 대응
+
+| 구성요소   | 기술                             |
+| ------ | ------------------------------ |
+| 백엔드    | Python, FastAPI (또는 Streamlit) |
+| 의도 분석  | TfidfVectorizer + KNN          |
+| 엔터티 추출 | 정규식 기반 또는 spaCy/KoBERT         |
+| 생성 응답  | Google Gemini API              |
+| 데이터 저장 | SQLite / MySQL                 |
+| 문서 임베딩 | HuggingFace + FAISS            |
+| UI     | Streamlit (웹 기반 인터페이스)         |
+
+
+[User Input]
+   ↓
+IntentMatcher (의도 분류)
+   ↓
+EntityParser (정보 추출)
+   ↓
+DB Query (공공데이터 검색)
+   ↓
+LLM Response Generator (자연어 응답 생성)
+   ↓
+[User에게 응답 출력]
+
+🌟 6. 기대 효과 및 활용 가능성
+비전문가도 공공데이터를 쉽게 이용
+
+시나리오 추가만으로 빠르게 도메인 확장 가능 (범죄예방, 날씨, 의료 등)
+
+학교, 지자체, 정부 사이트 등에 연계 가능
+
+향후 RAG, 음성 입력, 멀티턴 대화 등으로 확장 가능
+
