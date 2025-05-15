@@ -96,14 +96,3 @@ src/
 │ │ ├── fetch_api.py # 공공 데이터 API 수집 모듈
 │ │ ├── preprocess.py # 전처리 로직
 │ └── .env # 환경변수 저장 (로컬에만 존재)
-
----
-
-## 프로젝트 작업 방법
-
-2025-05-15 현재 v1 브랜치에서 작업
-
-ex) 소형섭 : v1_shs 브랜치 작성후 거기서 작업
-후에 v1_shs, v1_xxx, v1_yyy merge 후 v1 최종 푸쉬
-
-git_help 는 note/git.txt
