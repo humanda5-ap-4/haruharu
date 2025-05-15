@@ -1,4 +1,4 @@
-// src/App.tsx
+// src/frontend/src/App.tsx
 import React from "react";
 import SearchApp from "./pages/SearchApp";
 

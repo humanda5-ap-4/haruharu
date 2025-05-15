@@ -252,6 +252,9 @@ outputs/
 !docs/notes/*.txt
 !docs/planning/*.xlsx
 !docs/meetings/*.hwp
+!src/backend/nlp/data/*.json
+!src/frontend/*.json
+
 
 *.xlsx merge=ours
 
