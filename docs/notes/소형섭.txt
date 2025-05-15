@@ -1,0 +1,54 @@
+<소형섭>
+1. 주제 : 축제
+
+2. 수집할 공공 데이터API
+TourAPI 4.0
+전국문화축제표준데이터 - 공공데이터포털
+문화공공데이터광장 - KOPIS 축제정보API
+경기도 문화축제 현황 API - 경기데이터드림
+문화 빅데이터 포털 - 전국 문화축제 표준데이터
+
+3. NLP모델에서 리턴되는 문장형태,
+ex)
+{ 
+"festival_name": "서울 장미 축제",
+"festival_loc":"서울 중랑구 중화체육공원",
+"start_date":"2025-05-20",
+"fin_date":"2025-05-26",
+"distance":"3.2km"
+}
+
+4. 구성요소, 변수명 ( intent, entity ),
+ex) 구성요소: festival_name, festival_loc, start_date, fin_date, distace
+변수명: 서울장미축제, 서울중랑구 중화체육공원, ...
+"intent ": "축제 정보 조회"
+"entity": festival_name, . . ex전체
+entities = ["festival_name", "festival_loc", "start_date", "fin_date", "distance"]
+
+5. 필요한 자료구조
+| 목적              | 자료구조 형태                       |
+| --------------- | ----------------------------- |
+| 팀원 주제 매핑        | Dictionary                    |
+| 공공 데이터 API 목록   | List of Dictionaries          |
+| 챗봇 응답 (NLP 결과)  | JSON / Dictionary             |
+| 의도-개체 구조        | Nested Dictionary             |
+| Entity/구성요소 리스트 | List                          |
+| 데이터 필드 스키마 정의   | Dictionary (Key-Type Mapping) |
+
+6. 필요한 알고리즘,
+NLP모델류(의도분류, 개체명인식, 정보매칭 검색알고리즘, 응답생성알고리즘)
+날짜 변환,
+거리 계산,
+데이터 필터링
+
+7. DB정보
+| 컬럼명             | 자료형     | 설명          |
+| --------------- | ------- | ----------- |
+| `id`            | INT, PK | 고유 ID       |
+| `festival_name` | VARCHAR | 축제 이름       |
+| `festival_loc`  | VARCHAR | 장소          |
+| `start_date`    | DATE    | 시작 날짜       |
+| `fin_date`      | DATE    | 종료 날짜       |
+| `distance`      | VARCHAR | 거리 정보 (선택)  |
+| `region`        | VARCHAR | 지역 (시/도 기준) |
+| `source_api`    | VARCHAR | 출처 API 이름   |
