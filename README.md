@@ -1,3 +1,12 @@
+-------
+환경
+
+python = 3.10
+mysql = 8.0.41
+mysql workbench = 8.0.42
+-------
+
+
 ap/src/backend/requirements.txt -- Python 백엔드용 의존성파일
 ap/src/frontend/package.json -- React 프론트엔드용
 

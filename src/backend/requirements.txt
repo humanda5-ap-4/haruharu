@@ -3,3 +3,6 @@ uvicorn
 pydantic
 React
 axios
+mysql-connector
+mysql-connector-python
+scikit-learn
