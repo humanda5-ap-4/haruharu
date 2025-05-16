@@ -1,11 +1,12 @@
 #DB연결 함수         - 전현준님
 
 
-import pymysql
+import mysql.connector
+from mysql.connector import Error
 
 def get_db_connection():
     try:
-        conn = pymysql.connect(
+        connection = mysql.connector.connect(
             host='localhost',
             user='chatuser',
             password='chatpass123!',
@@ -13,7 +14,7 @@ def get_db_connection():
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )
-        return conn
+        return connection
     except Exception as e:
         print(f"DB 연결 실패: {e}")
         return None
