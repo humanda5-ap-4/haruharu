@@ -1,0 +1,77 @@
+.chatbot-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(7, 44, 19, 0.493);
+}
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+.chat-box {
+  height: 500px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 24px;
+  background: #f9f9f9;
+  margin-bottom: 18px;
+  font-size: 1.1rem;
+  transition: box-shadow 0.2s;
+}
+.chat-message {
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+.chat-message.user {
+  text-align: right;
+  color: #2b8a3e;
+}
+.chat-message.bot {
+  text-align: left;
+  color: #3b3b3b;
+}
+.chat-form {
+  display: flex;
+  gap: 8px;
+}
+.chat-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.chat-btn {
+  background: #2b8a3e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-btn:hover {
+  background: #226c2c;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  margin-bottom: 10px;
+}
+.tree-btn {
+  background-color: #8b5e3c; /* 나무 갈색 */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

@@ -1,0 +1,67 @@
+.quote-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #f8f6f5;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(139, 99, 62, 0.76);
+  text-align: center;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 28px;
+  color: #856453d8;
+}
+
+.quote {
+  font-style: italic;
+  font-size: 1.6rem;
+  color: #8b6d5c;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.author {
+  font-weight: 600;
+  color: #a67c52;
+  margin-bottom: 35px;
+}
+
+.chat-btn {
+  background: #2b8a3e; /* 초록 느낌 */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 10px;
+}
+
+.chat-btn:hover {
+  background: #226c2c;
+}
+
+.next-btn {
+  background-color: #8b5e3c; /* 나무 느낌 브라운 */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-btn:hover {
+  background-color: #6d4b2a;
+}
+
+.button-group {
+  text-align: right;
+  margin-bottom: 16px; /* 버튼 사이 적당한 간격 */
+}
