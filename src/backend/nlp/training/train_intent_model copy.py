@@ -36,6 +36,21 @@ SBERT(Sentence-BERT)
 Cosine 유사도 비교 → 가장 유사한 intent 선택
 """
 
+"""
+당신의 목표: SBERT + HuggingFace KoBERT Fine-tuning
+
+1단계: SBERT로 인텐트 추출 (Baseline)
+유사도 기반 분류: 문장 임베딩 → 코사인 유사도 비교
+
+학습 필요 없음 (데이터 적을 때 매우 효과적)
+
+2단계: KoBERT Fine-tuning으로 성능 향상
+인텐트 분류용 supervised fine-tuning
+
+데이터 많아지면 딥러닝 전환 (transformers 사용)
+
+"""
+
 
 import json
 import pickle

@@ -1,0 +1,27 @@
+[사용자 입력]
+   ↓
+NLU 처리 (intent + entity + 인덱스)
+   ↓
+매칭 결과 (ex: action: search_festival, params: {location, date})
+   ↓
+📦 DB에서 조건에 맞는 데이터 조회 (ex: 서울 축제)
+   ↓
+자연어 응답 생성 (parser)
+
+
+1️⃣ 공공API 데이터 수집 → MySQL 저장
+2️⃣ MySQL 테이블 설계 예
+3️⃣ matcher.py 수정 → DB 조회 로직 추가
+4️⃣ parser.py → 검색 결과를 자연어로 표현
+✅ 정리: 서비스 연결 구조
+구성	역할
+🧠 NLU	사용자 입력에서 intent + entity 추출
+🔍 matcher	intent에 따라 어떤 DB 조회를 할지 결정
+📦 DB 연동	공공API로 저장된 축제/공연/음식 데이터를 조회
+🗣 parser	자연어 문장으로 응답 생성
+
+공공API 수집 자동화 스크립트
+
+MySQL 스키마 설계 예시 (축제, 공연, 음식점)
+
+FastAPI로 DB 연결 샘플

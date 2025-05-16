@@ -98,4 +98,4 @@ clf = SbertIntentClassifier(
 )
 
 intent, score = clf.predict("요즘 서울에 무슨 행사 있어?")
-print(f"예측 인텐트: {intent} (점수: {score:.4f})")
+print(f"expected intent: {intent} (score: {score:.4f})")

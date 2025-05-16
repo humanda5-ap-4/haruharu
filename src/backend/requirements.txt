@@ -9,3 +9,7 @@ scikit-learn
 sentence-transformers
 transformers
 datasets
+konlpy
+torch
+transformers[torch]
+protobuf

@@ -2,7 +2,7 @@
 환경
 
 python = 3.10
-mysql = 8.0.41
+mysql = 8.0.41 - full installation
 mysql workbench = 8.0.42
 -------
 

@@ -20,3 +20,11 @@
     { "word": "?", "tag": "O", "start": 12, "end": 13 }
   ]
 }
+
+2025-05-16
+train_ner_model.py 한글까지 완성
+
+2025-05-19
+train_ner_model_fallback.py entity_dataset.json을 보고 조사, 어미 제거 "사전에 있는 단어 기준"
+index_mapper.py, nlu_final.py
+matcher.py, parser.py 완성

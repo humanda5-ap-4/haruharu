@@ -32,3 +32,11 @@ Entity dataset: 문장에서 의미 있는 정보를 추출 → 예: 장소, 날
     { "word": "?", "tag": "O" }
   ]
 }
+
++ 자동변환 도구
+    I- 태그도 이어붙이는 방식으로 확장하면 다단어 개체 지원 가능
+    KoNLPy, mecab, soynlp 등으로 토큰화 자동화 가능
+    text.find(word, pointer) 방식은 중복 단어 처리 시 주의 필요
+
+
+
