@@ -1,0 +1,34 @@
+Intent Dataset과 Entity Dataset 차이
+
+Intent dataset: 사용자의 의도가 무엇인지 분류 → 예: 축제, 공연, 관광지 등
+Entity dataset: 문장에서 의미 있는 정보를 추출 → 예: 장소, 날짜, 인물, 장르 등
+
+1. 문장 토큰화 (단어 단위 기준)
+    - 오늘 볼만한 공연 있어?
+        - ["오늘", "볼만한", "공연", "있어", "?"]
+        -{
+  "text": "오늘 볼만한 공연 있어?",
+  "entities": [
+    {
+      "entity": "DATE",
+      "value": "오늘",
+      "start": 0,
+      "end": 2,
+      "tag": "B-DATE"
+    },
+    {
+      "entity": "EVENT",
+      "value": "공연",
+      "start": 8,
+      "end": 10,
+      "tag": "B-EVENT"
+    }
+  ],
+  "tokens": [
+    { "word": "오늘", "tag": "B-DATE" },
+    { "word": "볼만한", "tag": "O" },
+    { "word": "공연", "tag": "B-EVENT" },
+    { "word": "있어", "tag": "O" },
+    { "word": "?", "tag": "O" }
+  ]
+}

@@ -254,7 +254,7 @@ outputs/
 !docs/meetings/*.hwp
 !src/backend/nlp/data/*.json
 !src/frontend/*.json
-
+!src/backend/nlp/training/dataset/*.json
 
 *.xlsx merge=ours
 

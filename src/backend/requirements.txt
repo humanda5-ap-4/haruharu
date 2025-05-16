@@ -6,3 +6,6 @@ axios
 mysql-connector
 mysql-connector-python
 scikit-learn
+sentence-transformers
+transformers
+datasets

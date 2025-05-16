@@ -42,7 +42,7 @@ import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
-with open("intent_dataset.json", "r", encoding="utf-8") as f:
+with open("dataset/intent_dataset.json", "r", encoding="utf-8") as f:
     dataset = json.load(f)
 
 texts = [item["text"] for item in dataset]
