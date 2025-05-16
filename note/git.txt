@@ -27,3 +27,10 @@ git merge v1_shs
 git merge v1_xxx
 git merge v1_yyy
 git push origin v1 -- 최종
+
+살짝충돌
+git pull origin BRANCH_NAME -- 충돌시 ( BRANCHNAME | MERGE )
+:wq 저장후 git commit
+git add .
+git commit -m "text"
+git push -u origin BRANCHNAME
