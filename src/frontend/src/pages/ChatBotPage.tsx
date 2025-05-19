@@ -34,7 +34,7 @@ const ChatBotPage: React.FC = () => {
   return (
     <div className="chatbot-container">
       <h1>하루하루</h1>
-      <button className="tree-btn" onClick={() => (window.location.href = '/quote')}>
+      <button className="tree-btn" onClick={() => (window.location.href = '/QuotePage')}>
         오늘의 명언
       </button>
       <div className="chat-box" ref={chatBoxRef}>
@@ -54,7 +54,7 @@ const ChatBotPage: React.FC = () => {
         <input
           type="text"
           className="chat-input"
-          placeholder="메시지를 입력하세요"
+          placeholder="알고싶은 정보를 물어보세요"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           disabled={isLoading}

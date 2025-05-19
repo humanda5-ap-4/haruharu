@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import axios from "axios";
-import ChatBotPage from "./ChatBotPage";
-import "./ChatBotPage.css";
+
 
 const SearchApp = () => {
   const [userInput, setUserInput] = useState("");
@@ -79,9 +78,6 @@ const SearchApp = () => {
           )}
         </div>
       )}
-      <div className="mt-8">
-        <ChatBotPage />
-      </div>
     </div>
   );
 };
