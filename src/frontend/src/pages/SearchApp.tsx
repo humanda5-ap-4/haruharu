@@ -29,7 +29,7 @@ const SearchApp = () => {
     }
 
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/search", {
+      const res = await axios.get("http://localhost:8000/api/search", {
         params: { category: detectedCategory, query },
       });
       setResult(res.data);

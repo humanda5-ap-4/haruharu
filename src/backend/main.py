@@ -18,9 +18,6 @@ app = FastAPI()
 
 frontend_path = os.path.join(os.path.dirname(__file__), "../frontend/dist")
 
-app.mount("/static", StaticFiles(directory=frontend_path, html=True), name="static")
-
-
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
@@ -34,3 +31,6 @@ app.add_middleware(
 def search(category: str = Query(...), query: str = Query(...)):
     result = search_by_category_and_name(category, query)
     return result
+
+
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
