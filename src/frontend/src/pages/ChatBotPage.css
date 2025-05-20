@@ -1,48 +1,61 @@
+/* -------------------- Chatbot 전체 박스 ----------------------- */
 .chatbot-container {
-  max-width: 420px;
-  margin: 40px auto;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  max-width: 56vh;
+  margin: 0 auto;
+  padding: 10px;
   border-radius: 24px;
   background: #fafafa;
   box-shadow: 0 4px 24px rgba(7, 44, 19, 0.18);
   border: 3px solid #ffe8b3;
 }
-/* 상단 타이틀 */
-.chatbot-container h1 {
-  font-size: 1.6rem;
-  margin-bottom: 12px;
-  text-align: center;
-  font-weight: bold;
-  color: #222;
+ /* -------------------- title ----------------------- */
+.title-box {
+  display: flex;
+  align-items: center;         /* 세로 중앙 정렬 */
+  justify-content: center;     /* 필요시 왼쪽 정렬 flex-start로 변경 */
+  background: #d8f6fa;
+  border-radius: 18px;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;                 /* 부모 너비에 맞춤 */
+  box-sizing: border-box;
+  min-height: 40px;            /* 높이 고정(선택), 너무 작으면 40~48px 추천 */
 }
 
-.btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
+.title-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;              /* baseline 문제 방지 */
 }
-.tree-btn {
-  background-color: #8b5e3c;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 16px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.title-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #222;
+  line-height: 1;              /* 세로 맞춤, 필요시 32px로 맞춰도 됨 */
+  display: flex;               /* flex로 세로 중앙 맞춤 */
+  align-items: center;
 }
+ /* --------------------- 사용박스 ---------------------- */
 .chat-box {
-  height: 580px;
+  flex: 1;
   overflow-y: auto;
   border-radius: 16px;
   padding: 24px 18px;
   background: #d8f6fa;
-  margin-bottom: 20px;
   font-size: 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+ /* --------------------- 메시지 --------------------- */
 .chat-message.bot {
   align-self: flex-start;
   background: #c7e5be;
@@ -63,41 +76,45 @@
   max-width: 80%;
   box-shadow: 0 1px 4px rgba(200, 170, 50, 0.05);
 }
+ /* --------------------- 입력 ---------------------- */
 .chat-form {
-  background: #d8f6be;           /* 연한 연두색 배경 */
-  border-radius: 18px;           /* 둥근 모서리 */
-  padding: 18px 28px;            /* 위아래, 좌우 여백 */
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border-radius: 14px;           /* 둥근 모서리 */
+  background: #d8f6fa;
+  /* box-shadow: 0 0 16px 0 rgba(0,0,0,0.14); */
+  border-top: 1px solid #eee;
   display: flex;
-  justify-content: center;       /* 내부 요소 중앙 정렬 */
+  width: 100%;
+  justify-content: center;
   align-items: center;
-  width: 95%;                    /* 넓게 */
-  margin: 0 auto 14px auto;      /* 중앙에 위치, 아래쪽 여백 */
   box-sizing: border-box;
-  gap: 12px;                     /* 입력창/버튼 사이 간격 */
+  padding: 1px 0 1px 0;
 }
-
 .chat-input {
-  background-color: #f5fff7;     /* 입력창 배경색 */
+  background-color: #6bff81;     /* 입력창 배경색 */
   border: 1px solid #c7e5be;     /* 연한 테두리 */
   border-radius: 14px;           /* 둥근 모서리 */
-  padding: 14px 18px;            /* 안쪽 여백 */
+  padding: 12px 24px;            /* 안쪽 여백 */
   font-size: 1rem;
-  width: 80%;                    /* 더 넓게 */
+  width: 90%;                    /* 더 넓게 */
   margin-right: 10px;
   box-sizing: border-box;
   display: block;
 }
-
 .chat-btn {
-  background: #a6e28c;
+  background: #A5F39E;
   color: #255c1c;
   border: none;
   border-radius: 14px;
-  padding: 14px 28px;
+  padding: 12px 24px;
   font-size: 1rem;
   cursor: pointer;
-  font-weight: bold;
   transition: background 0.2s;
+  white-space: nowrap;
 }
 .chat-btn:hover {
   background: #7fdc5b;

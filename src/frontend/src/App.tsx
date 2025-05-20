@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ChatBotPage from "./pages/ChatBotPage";
-import QuotePage from './pages/QuotePage';
 
 
 function App() {
@@ -8,25 +7,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<ChatBotPage />} />
-        <Route path="/QuotePage" element={<QuotePage />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
-
-// import ChatBotPage from "./pages/ChatBotPage";
-
-// function App() {
-//   return (
-//     <div>
-//       <ChatBotPage />
-//     </div>
-//   );
-// }
-
-// export default App;
 
 
 // 예시 파일

@@ -33,36 +33,38 @@ const ChatBotPage: React.FC = () => {
 
   return (
     <div className="chatbot-container">
-      <h1>하루하루</h1>
-      <button className="tree-btn" onClick={() => (window.location.href = '/QuotePage')}>
-        오늘의 명언
-      </button>
+      <div className="title-box">
+        <img src="/logo_max.png" alt="로고" className="title-icon" />
+        <span className="title-text">하루하루</span>
+      </div>
+
       <div className="chat-box" ref={chatBoxRef}>
         {messages.map((msg, i) => (
           <div key={i} className={`chat-message ${msg.type}`}>
             <b>{msg.type === 'user' ? '나' : '챗봇'}:</b> {msg.text}
           </div>
         ))}
+              
+        <form
+          className="chat-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage();
+          }}
+        >
+          <input
+            type="text"
+            className="chat-input"
+            placeholder="알고싶은 정보를 물어보세요"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            disabled={isLoading}
+          />
+          <button type="submit" className="chat-btn" disabled={isLoading}>
+            전송
+          </button>
+        </form>
       </div>
-      <form
-        className="chat-form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          sendMessage();
-        }}
-      >
-        <input
-          type="text"
-          className="chat-input"
-          placeholder="알고싶은 정보를 물어보세요"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          disabled={isLoading}
-        />
-        <button type="submit" className="chat-btn" disabled={isLoading}>
-          보내기
-        </button>
-      </form>
     </div>
   );
 };
