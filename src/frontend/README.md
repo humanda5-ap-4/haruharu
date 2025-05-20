@@ -23,8 +23,7 @@ frontend/
 ├── src/
 │    ├── assets/               # 이미지, 정적 파일
 │    ├── pages/                # 라우팅되는 주요 페이지
-│    │     ├── ChatBotPage.tsx
-│    │     └── QuotePage.tsx
+│    │     └── ChatBotPage.tsx
 │    │
 │    ├── App.tsx               # 라우터 설정 포함
 │    └── main.tsx              # 앱 진입점

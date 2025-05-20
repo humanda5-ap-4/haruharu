@@ -7,7 +7,7 @@
   margin: 0 auto;
   padding: 10px;
   border-radius: 24px;
-  background: #fafafa;
+  background: #e9e9e9;
   box-shadow: 0 4px 24px rgba(7, 44, 19, 0.18);
   border: 3px solid #ffe8b3;
 }
@@ -47,8 +47,8 @@
 .chat-box {
   flex: 1;
   overflow-y: auto;
-  border-radius: 16px;
-  padding: 24px 18px;
+  border-radius: 16px 16px 0 0;
+  padding: 24px 18px 10px 18px;
   background: #d8f6fa;
   font-size: 1.1rem;
   display: flex;
@@ -83,41 +83,65 @@
   left: 0;
   right: 0;
   z-index: 10;
-  border-radius: 14px;           /* 둥근 모서리 */
-  background: #d8f6fa;
-  /* box-shadow: 0 0 16px 0 rgba(0,0,0,0.14); */
-  border-top: 1px solid #eee;
+  border-radius: 0 0 16px 16px ;              /* 둥근 모서리 */
+  background: #98df7c;
+  box-shadow: 0 0 16px 0 rgba(0,0,0,0.14);  /* 그림자 */
+  border-top: 1px solid #98df7c;
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  padding: 1px 0 1px 0;
+  padding: 8px 6px 8px 6px;         /* 위 왼쪽 아래 오른쪽 */
+  margin: 0;                        /* margin-bottom 제거 */
 }
 .chat-input {
-  background-color: #6bff81;     /* 입력창 배경색 */
-  border: 1px solid #c7e5be;     /* 연한 테두리 */
-  border-radius: 14px;           /* 둥근 모서리 */
-  padding: 12px 24px;            /* 안쪽 여백 */
+  background-color: #ffffff;      /* 입력창 배경색 */
+  border: 1px solid #ffffff;      /* 테두리 */
+  border-radius: 14px;              /* 둥근 모서리 */
+  padding: 14px 14px;               /* 안쪽 여백 */
   font-size: 1rem;
-  width: 90%;                    /* 더 넓게 */
-  margin-right: 10px;
+  width: 90%;           /* 가로 고정 */
+  min-height: 40px;     /* 최소 높이 */
+  max-height: 120px;    /* 최대 높이(선택) */
+  margin-right: 8px;
   box-sizing: border-box;
   display: block;
+  resize: none;         /* 사용자가 직접 크기 조절 못하게 */
+  overflow-y: auto;     /* 내용이 많으면 스크롤 */
 }
 .chat-btn {
-  background: #A5F39E;
-  color: #255c1c;
+  background: #946500;
+  color: #18b800;
   border: none;
   border-radius: 14px;
-  padding: 12px 24px;
+  padding: 10px 18px;
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s;
   white-space: nowrap;
 }
 .chat-btn:hover {
-  background: #7fdc5b;
+  background: #82d300;
+  color: #946500;
+
 }
 
 
+/* 스크롤 - chat-box에만 적용하려면 .chat-box를 앞에 붙이세요 */
+*::-webkit-scrollbar {
+  width: 6px;           /* 얇게 */
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #ccc;     /* 연한 회색 */
+  border-radius: 3px;   /* 살짝 둥글게 */
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+/*하루하루란 글자를 보고 하늘 아래 나무 한그루 라는 느낌을 받아서~~*/

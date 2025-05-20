@@ -8,6 +8,15 @@ const ChatBotPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
+
+  // 입력창 자동 높이 조절
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setUserInput(e.target.value);
+    e.target.style.height = "auto";
+    e.target.style.height = e.target.scrollHeight + "px";
+  };
+
+  // 메시지 전송
   const sendMessage = async () => {
     if (!userInput.trim() || isLoading) return;
 
@@ -24,6 +33,15 @@ const ChatBotPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();      // 기본 줄바꿈 막기
+      sendMessage();           // 메시지 전송 함수 호출
+    }
+    // Shift+Enter는 아무 처리 안 하면 줄바꿈이 됨
+  };
+
 
   useEffect(() => {
     if (chatBoxRef.current) {
@@ -44,27 +62,28 @@ const ChatBotPage: React.FC = () => {
             <b>{msg.type === 'user' ? '나' : '챗봇'}:</b> {msg.text}
           </div>
         ))}
-              
-        <form
+      </div>
+      <form
           className="chat-form"
           onSubmit={(e) => {
             e.preventDefault();
             sendMessage();
           }}
         >
-          <input
-            type="text"
+          <textarea
             className="chat-input"
             placeholder="알고싶은 정보를 물어보세요"
             value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             disabled={isLoading}
+            rows={1}
+            style={{ resize: "none" }}
           />
           <button type="submit" className="chat-btn" disabled={isLoading}>
             전송
           </button>
         </form>
-      </div>
     </div>
   );
 };
