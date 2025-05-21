@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import WelcomePage from './pages/WelcomePage';
 import ChatBotPage from "./pages/ChatBotPage";
 
 
@@ -6,7 +7,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ChatBotPage />} />
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/chat" element={<ChatBotPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -11,6 +11,79 @@
   box-shadow: 0 4px 24px rgba(7, 44, 19, 0.18);
   border: 3px solid #ffe8b3;
 }
+
+/* .chatbot-container에 배경 이미지를 추가하려면 이 클래스로 조정 */
+.welcome-background {
+  background-image: url('/nature_scene.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 박스 내부 오른쪽 상단 로고 */
+.welcome-logo-inside {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+  z-index: 10;
+}
+
+
+.chatbot-container.welcome-background {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;  /* 하단 정렬 */
+  align-items: center;
+  padding-bottom: 16px; /* 입력창 아래 여백 */
+  position: relative;
+  background-image: url('/nature_scene.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* 로고 스타일(배경 이미지용) */
+.welcome-logo-inside {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  z-index: 10;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 빈 공간 확보용 */
+.welcome-spacer {
+  flex: 1;  /* 위쪽 공간 확보해서 입력창이 아래로 내려가게 함 */
+}
+
+/* 애니메이션 정의 */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
  /* -------------------- title ----------------------- */
 .title-box {
   display: flex;
@@ -55,7 +128,32 @@
   flex-direction: column;
   gap: 16px;
 }
+
  /* --------------------- 메시지 --------------------- */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-message {
+  animation: slideUpFade 0.4s ease-out;
+}
+.chat-message.bot::before {
+  content: '🌿';
+  margin-right: 6px;
+}
+
+.chat-message.user::before {
+  content: '🌱';
+  margin-right: 6px;
+}
+
 .chat-message.bot {
   align-self: flex-start;
   background: #c7e5be;
@@ -64,8 +162,20 @@
   padding: 18px 20px;
   margin-bottom: 8px;
   max-width: 80%;
+  position: relative;
   box-shadow: 0 1px 4px rgba(100, 180, 100, 0.05);
 }
+.chat-message.bot::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #c7e5be;
+}
+
 .chat-message.user {
   align-self: flex-end;
   background: #fff8b8;
@@ -76,6 +186,17 @@
   max-width: 80%;
   box-shadow: 0 1px 4px rgba(200, 170, 50, 0.05);
 }
+.chat-message.user::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #fff8b8;
+}
+
  /* --------------------- 입력 ---------------------- */
 .chat-form {
   position: sticky;
@@ -92,7 +213,7 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  padding: 8px 6px 8px 6px;         /* 위 왼쪽 아래 오른쪽 */
+  padding: 8px 6px;         /* 위 왼쪽 아래 오른쪽 */
   margin: 0;                        /* margin-bottom 제거 */
 }
 .chat-input {
@@ -145,3 +266,5 @@
 
 
 /*하루하루란 글자를 보고 하늘 아래 나무 한그루 라는 느낌을 받아서~~*/
+
+
