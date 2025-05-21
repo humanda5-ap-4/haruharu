@@ -1,0 +1,45 @@
+<최주호>
+1. 주제 : 게임
+2. 수집할 데이터API	
+리니지2m api
+
+3. NLP모델에서 리턴되는 문장형태,
+ex) 
+"item_name": 아이템 명
+"server_name": 서버 이름
+"enchant_level": 강화
+"grade": 등급
+"image": 이미지 url
+"now_min_unit_price": 현 최저가
+"avg_unit_price": 28일 평균가
+
+4. 구성요소, 변수명 ( intent, entity )
+
+intent: "아이템 현제 시세 조회", "아이템 평균가 조회", "아이템 최저가 조회"
+entity: { item_name, server_name, enchant_level, grade, now_min_unit_price, avg_unit_price }
+
+5. 필요한 자료구조
+| 목적              | 자료구조 형태                       |
+| --------------- | ----------------------------- |
+| 팀원 주제 매핑        | Dictionary  ex{"005930": "삼성전자"} |
+| 공공 데이터 API 목록   | List of Dictionaries          |
+| 챗봇 응답 (NLP 결과)  | JSON / Dictionary             |
+| 의도-개체 구조        | Nested Dictionary             |
+| Entity/구성요소 리스트 | List                          |
+| 데이터 필드 스키마 정의   | Dictionary (Key-Type Mapping) |
+
+6. 필요한 알고리즘,
+NLP모델류(개체명인식, 정보매칭 검색알고리즘, 응답생성알고리즘)
+의도 분류: (transformer 기반 분류기 (SVM, Logistic Regression, Random Forest...)
+개체 추출
+Json/함수 호출 스키마 생성
+
+7. DB정보
+| 컬럼명             | 자료형     | 설명          |
+| --------------- | ------- | ----------- |
+| `id`            | INT, PK | 고유 ID       |
+| `item_name` | VARCHAR | 아이템 이름       |
+| `server_name`  | VARCHAR | 서버이름          |
+| `enchant_level`    | INT    | 강화등급      |
+| `now_min_unit_price`      | INT | 현 최저가      |
+| `avg_unit_price`      | VARCHAR | 28일 평균가  |
