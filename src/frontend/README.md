@@ -19,11 +19,14 @@
 ```
 frontend/
 ├── public/             
+│     └── logo,fruit.png...    # 로고와 아이콘
 │
 ├── src/
 │    ├── assets/               # 이미지, 정적 파일
 │    ├── pages/                # 라우팅되는 주요 페이지
-│    │     └── ChatBotPage.tsx
+│    │    ├── SeacherApp.tsx   # 예시 페이지
+│    │    ├── WelcomePage.tsx  # 첫 화면 페이지
+│    │    └── ChatBotPage.tsx  # 사용되는 챗 페이지
 │    │
 │    ├── App.tsx               # 라우터 설정 포함
 │    └── main.tsx              # 앱 진입점

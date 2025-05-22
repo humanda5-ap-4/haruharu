@@ -1,0 +1,56 @@
+/* --- 배경 이미지 --- */
+.welcome-background {
+  background-image: url('/nature_scene.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+/* --- 오른쪽 상단 로고 --- */
+.welcome-logo-inside {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  z-index: 10;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.fruit-center-box {
+  flex: 1;                  /* 빈 공간을 차지해서 세로 중앙 위치 가능 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fruit-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.fruit-icon {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+}
+.fruit-icon:hover {
+  transform: scale(1.1);
+}
+.fruit-icon.selected {
+  box-shadow: 0 0 10px 3px #82d300;
+  transform: scale(1.15);
+}
+
+/*하루하루란 글자를 보고 하늘 아래 나무 한그루 라는 느낌을 받아서~~*/

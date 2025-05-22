@@ -1,11 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Common.css';
 import './ChatBotPage.css';
 
 const ChatBotPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const topic = new URLSearchParams(location.search).get('topic');
+  const topicIconMap: { [key: string]: string } = {
+    festival: '/fruit1.png',
+    steam: '/fruit2.png',
+    lineage: '/fruit3.png',
+    etc: '/fruit4.png',
+  };
   const initialMessage = new URLSearchParams(location.search).get('msg');
   const [messages, setMessages] = useState<{ type: 'user' | 'bot'; text: string }[]>([]);
   const [typingMessage, setTypingMessage] = useState('');
@@ -56,7 +64,7 @@ const ChatBotPage: React.FC = () => {
 
     setIsLoading(true);
     setMessages(prev => [...prev, { type: 'user', text: userInput }]);
-    
+
     try {
       const res = await axios.post('/api/chat', { message: userInput });
       showTypingEffect(res.data?.response);
@@ -110,13 +118,17 @@ const ChatBotPage: React.FC = () => {
   return (
     <div className="chatbot-container">
       <div className="title-box">
-        <img 
-          src="/logo_max.png" 
-          alt="로고" 
-          className="title-icon" 
-          style={{ cursor: 'pointer' }}
-          onClick={() => navigate('/')}/>
-        <span className="title-text">하루하루</span>
+        <div className="title-left" onClick={() => navigate('/')}>
+          <img src="/logo_max.png" alt="로고" className="title-icon" />
+          <span className="title-text">하루하루</span>
+        </div>
+        {topic && topicIconMap[topic] && (
+          <img
+            src={topicIconMap[topic]}
+            alt="선택 주제 아이콘"
+            className="title-topic-icon"
+          />
+        )}
       </div>
 
       <div className="chat-box" ref={chatBoxRef}>
