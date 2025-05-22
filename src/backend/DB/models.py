@@ -18,3 +18,12 @@ class ChatLog(Base):
         return f"<ChatLog(id={self.id}, user_id='{self.user_id}', message='{self.message[:20]}...')>"
     
     
+
+class Stock(Base):
+    __tablename__ = "stocks"
+    id = Column(Integer, primary_key=True)
+    symbol = Column(String(10), unique=True, nullable=False)
+    name = Column(String(100), nullable=False)
+    price = Column(Integer)
+    volume = Column(Integer)
+    change_percent = Column(Integer)

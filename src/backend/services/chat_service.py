@@ -1,18 +1,13 @@
-from db.connection import get_connection
-
-def save_chat_log(user_id: str, message: str, reply: str):
-    conn = get_connection()
-    if not conn:
-        return False
+from sqlalchemy.orm import Session
+from DB.models import ChatLog
+def save_chat_log(db: Session, user_id: str, message: str, reply: str):
     try:
-        cursor = conn.cursor()
-        sql = "INSERT INTO chat_logs (user_id, message, reply) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (user_id, message, reply))
-        conn.commit()
+        new_log = ChatLog(user_id=user_id, message=message, reply=reply)
+        db.add(new_log)
+        db.commit()
+        db.refresh(new_log)
         return True
     except Exception as e:
-        print("대화저장 오류:", e)
+        print("대화 저장 오류:", e)
+        db.rollback()
         return False
-    finally:
-        cursor.close()
-        conn.close()
