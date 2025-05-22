@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from DB.models import ChatLog
+
 def save_chat_log(db: Session, user_id: str, message: str, reply: str):
     try:
         new_log = ChatLog(user_id=user_id, message=message, reply=reply)
