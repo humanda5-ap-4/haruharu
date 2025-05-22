@@ -1,10 +1,10 @@
-# src/backend/main.py
 import sys
 import asyncio
-from mock_engine import search_stock_by_name  # 주식 검색 함수 import
 
 if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+from mock_engine import search_stock_by_name  # 주식 검색 함수 import
 
 from fastapi import FastAPI, Query, Body, Depends
 from sqlalchemy.orm import Session
