@@ -9,7 +9,7 @@ app = FastAPI()
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 실제 배포시에는 특정 origin으로 제한
+    allow_origins=["http://localhost:5173"],  # 실제 배포시에는 특정 origin으로 제한
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -87,8 +87,8 @@ const ChatBotPage: React.FC = () => {
     setMessages(prev => [...prev, { type: 'user', text: userInput }]);
 
     try {
-      const res = await axios.post('http://localhost:8000/api/chat', { message: userInput });
-      showTypingEffect(res.data?.response);
+      const res = await axios.post('http://localhost:8000/chat', { msg: userInput });
+      showTypingEffect(res.data?.answer);
     } catch {
       showTypingEffect('오류가 발생했습니다.');
     } finally {
@@ -112,6 +112,8 @@ const ChatBotPage: React.FC = () => {
     setMessages([]);
   };
 
+  
+
   // 초기 메시지 처리
   useEffect(() => {
     if (didRun.current) return;
@@ -122,8 +124,8 @@ const ChatBotPage: React.FC = () => {
       setIsLoading(true);
       setMessages(prev => [...prev, { type: 'user', text: initialMessage }]);
       try {
-        const res = await axios.post('http://localhost:8000/api/chat', { message: initialMessage });
-        showTypingEffect(res.data?.response);
+        const res = await axios.post('http://localhost:8000/chat', { msg: initialMessage });
+        showTypingEffect(res.data?.answer);
       } catch {
         showTypingEffect('오류가 발생했습니다.');
       } finally {
