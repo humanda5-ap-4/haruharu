@@ -52,5 +52,37 @@
   box-shadow: 0 0 10px 3px #82d300;
   transform: scale(1.15);
 }
+/* 말풍선 스타일 */
+.comment-bubble {
+  position: absolute;
+  top: 410px; /* 트리 중앙에 맞게 조정, 필요시 0~40px 사이로 */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(34, 66, 0, 0.582);
+  color: #ffe400;
+  padding: 12px 20px;
+  border-radius: 18px;
+  border: 2.5px solid #82d300;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  z-index: 10;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  min-width: 180px;
+  max-width: 80%;
+  pointer-events: none;
+}
+
+.comment-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  transform: translateX(-50%);
+  border-width: 12px 14px 0 14px;
+  border-style: solid;
+  border-color: #82d300 transparent transparent transparent;
+}
+
 
 /*하루하루란 글자를 보고 하늘 아래 나무 한그루 라는 느낌을 받아서~~*/

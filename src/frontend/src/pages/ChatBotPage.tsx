@@ -7,8 +7,10 @@ import './ChatBotPage.css';
 const ChatBotPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const topic = new URLSearchParams(location.search).get('topic') || 'default';
-  const LOCAL_STORAGE_KEY = `chatbot_messages_${topic}`;
+  const topic = new URLSearchParams(location.search).get('topic') || 'common';
+  const LOCAL_STORAGE_KEY = topic === "common"
+    ? "chatbot_messages_stock_common"
+    : `chatbot_messages_${topic}`;
 
   // 1. localStorage에서 불러오기
   const getInitialMessages = () => {
