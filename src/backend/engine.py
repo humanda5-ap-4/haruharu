@@ -92,8 +92,12 @@ def load_models():
     global vec, clf, matcher, kogpt_tok, kogpt_model, device
     if vec is None or clf is None:
         print("[Load] Loading intent model and vectorizer...")
-        vec = joblib.load("nlu/intent_vec.joblib")
-        clf = joblib.load("nlu/intent_clf.joblib")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        vec_path = os.path.join(base_dir, "nlu", "intent_vec.joblib")
+        clf_path = os.path.join(base_dir, "nlu", "intent_clf.joblib")
+
+        vec = joblib.load(vec_path)
+        clf = joblib.load(clf_path)
         matcher = EntityMatcher()
         print("[Load] Loading KoGPT tokenizer & model...")
         device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -101,6 +105,7 @@ def load_models():
         kogpt_tok = AutoTokenizer.from_pretrained(MODEL_NAME)
         kogpt_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME).to(device)
         print("[Load] Done.")
+    print(f"[DEBUG] vec type: {type(vec)}, clf type: {type(clf)}") 
 
 # — 커맨드라인 실행 지원 -----------------------------------------------
 if __name__ == "__main__":
