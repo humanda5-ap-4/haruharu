@@ -1,42 +1,24 @@
-import sys
-import asyncio
-
-if sys.platform.startswith("win"):
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
-from mock_engine import search_stock_by_name  # 주식 검색 함수 import
+# src/backend/main.py
 
 from fastapi import FastAPI, Query, Body, Depends
 from sqlalchemy.orm import Session
+
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+#from mock_engine import search_by_category_and_name
+from DB.db import get_db
+
 from pydantic import BaseModel
 
-from DB.db import get_db
-from DB.crud import insert_chat_log
-from services.chat_service import save_chat_log
-from services.nlp_service import get_intent_and_entities
-from services.stock_service import handle_intent
-from mock_engine import search_by_category_and_name
 
-import os
+from services.stock_service import search_stock_by_name, get_stock_with_max_diff
+from services.nlp_service import get_intent_and_entities
+
+
 
 app = FastAPI()
 
-# ⚙️ CORS 설정
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:8000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-# 🌐 정적 파일 서빙
-frontend_path = os.path.join(os.path.dirname(__file__), "../frontend/dist")
-app.mount("/static", StaticFiles(directory=frontend_path, html=True), name="static")
 
-# 📩 챗봇 요청
 class ChatRequest(BaseModel):
     user_id: str
     message: str
@@ -44,31 +26,39 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
 
+
+
+# CORS 설정
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 실제 배포시에는 특정 origin으로 제한
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/api/chat", response_model=ChatResponse)
 def chat_endpoint(req: ChatRequest = Body(...), db: Session = Depends(get_db)):
     intent_obj = get_intent_and_entities(req.message)
-    reply_data = handle_intent(intent_obj)
-    reply = reply_data.get("message", str(reply_data))
 
-    success = save_chat_log(db, req.user_id, req.message, reply)
-    if not success:
-        print("대화 저장 실패")
+    # intent_obj 예: {"intent": "get_max_diff_stock", "entities": {...}}
+    if intent_obj["intent"] == "get_max_diff_stock":
+        stock_info = get_stock_with_max_diff(db)
+        if "error" in stock_info:
+            reply = stock_info["error"]
+        else:
+            reply = (f"변동폭이 가장 큰 주식은 {stock_info['name']}이며, "
+                     f"가격은 {stock_info['price']}, 변동폭은 {stock_info['diff']} "
+                     f"({stock_info['rate']}) 입니다.")
+    elif intent_obj["intent"] == "search_stock":
+        name = intent_obj["entities"].get("stock_name")
+        stock_info = search_stock_by_name(db, name)
+        if "error" in stock_info:
+            reply = stock_info["error"]
+        else:
+            reply = (f"{stock_info['name']} 현재 가격은 {stock_info['price']}, "
+                     f"변동폭은 {stock_info['diff']} ({stock_info['rate']}) 입니다.")
+    else:
+        reply = "죄송합니다, 이해하지 못했습니다."
 
     return ChatResponse(reply=reply)
-
-
-@app.get("/api/stock")
-def stock_search(query: str = Query(...)):
-    result = search_stock_by_name(query)
-    if "error" in result:
-        return {"error": result["error"]}
-    return result
-
-
-# 🔍 축제, 공연 등 검색
-@app.get("/api/search")
-def search(category: str = Query(...), query: str = Query(...)):
-    if not query.strip():
-        return {"error": "검색어를 입력해주세요."}
-    result = search_by_category_and_name(category, query)
-    return result
