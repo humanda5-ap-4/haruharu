@@ -74,29 +74,34 @@ def extract_entities(text: str):
 
 
 # KoGPT 응답 생성
-class Engine:
-    def kogpt_answer(self, txt, intent, ents):
-        ent_str = ", ".join(f"{e['type']}:{e['value']}" for e in ents)
-        prompt = (
-            f"[사용자]: {txt}\n"
-            f"[의도]: {intent}\n"
-            f"[개체]: {ent_str}\n"
-            f"[챗봇]:"
-        )
-        inputs = self.kogpt_tok(prompt, return_tensors="pt").to(self.device)
-        gen = kogpt_model.generate(
+def kogpt_answer(txt, intent, ents):
+    ent_str = ", ".join(f"{e['type']}:{e['value']}" for e in ents)
+    prompt = (
+        f"사용자: {txt}\n"
+        f"의도: {intent}\n"
+        f"개체: {ent_str}\n"
+        f"답변: "
+    )
+
+    inputs = kogpt_tok(prompt, return_tensors="pt").to(device)
+    gen = kogpt_model.generate(
         **inputs,
         max_new_tokens=64,
         do_sample=True,
         top_p=0.9,
         temperature=0.7,
-        eos_token_id=kogpt_tok.eos_token_id,  # 종료 토큰 지정
-        pad_token_id=kogpt_tok.pad_token_id,  # 패딩 토큰 지정
-        no_repeat_ngram_size=2,                # 2-gram 이상 반복 방지
+        eos_token_id=kogpt_tok.eos_token_id or kogpt_tok.pad_token_id,
+        pad_token_id=kogpt_tok.pad_token_id,
+        no_repeat_ngram_size=3,
+        repetition_penalty=1.2,
     )
 
-        return self.kogpt_tok.decode(gen[0, inputs.input_ids.shape[1]:], skip_special_tokens=True)
-
+    result = kogpt_tok.decode(
+        gen[0, inputs.input_ids.shape[1]:],
+        skip_special_tokens=True
+    ).strip()
+    
+    return result
 
 # 기본 라우트
 @app.get("/")
