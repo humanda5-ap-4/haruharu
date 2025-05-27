@@ -45,12 +45,7 @@ def load_models():
         print("[Load] Done.")
 
 # 슬랭 정규화
-# 절대 경로로 수정
-base_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(base_dir, "data", "slang.json")
-
-# 파일 열기
-with open(file_path, encoding="utf-8") as f:
+with open("data/slang.json", encoding="utf-8") as f:
     slang = json.load(f)
 
 def normalize(txt: str) -> str:

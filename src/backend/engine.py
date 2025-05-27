@@ -60,13 +60,7 @@ class EntityMatcher:
         return ents
 
 ## — 슬랭(normalize) ----------------------------------------------------
-base_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(base_dir, "data", "slang.json")
-
-# 절대경로로 수정
-with open(file_path, encoding="utf-8") as f:
-    slang = json.load(f)
-
+slang = json.load(open("data/slang.json", encoding="utf-8"))
 def normalize(txt: str) -> str:
     for k, v in slang.items():
         txt = re.sub(fr"\b{k}\b", v, txt)
