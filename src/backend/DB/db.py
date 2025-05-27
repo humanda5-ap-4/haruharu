@@ -1,16 +1,27 @@
 #DB연결 함수         - 전현준님
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "mysql+pymysql://humanda5:humanda5@192.168.0.73:3306/chatbot"
+DB_USER = "humanda5"
+DB_PASSWORD = "humanda5"
+DB_HOST = "192.168.0.73"
+DB_PORT = 3306
+DB_NAME = "chatbot"
 
-engine = create_engine(DATABASE_URL, echo=True)
+DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 Base = declarative_base()
 
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 ###/ 
 # 
 # import mysql.connector

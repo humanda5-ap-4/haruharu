@@ -1,3 +1,13 @@
+# sql
+
+from fastapi import Depends
+from sqlalchemy.orm import Session
+import DB.crud
+from DB.services import intent_handlers
+
+from DB.db import get_db
+
+
 from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import joblib
@@ -121,21 +131,47 @@ def root():
 #    return {"intent": intent, "entities": ents, "answer": answer}
 
 @app.post("/api/chat")
-async def chat(msg: str = Body(..., embed=True)):
+async def chat(
+    msg: str = Body(..., embed=True),
+    db: Session = Depends(get_db)
+):
     if not msg.strip():
-        raise HTTPException(status_code=400, detail="메시지가 비어 있습니다.")
+        return {"error": "메시지가 비어 있습니다."}
+
     engine.load_models()
-    
+
     txt = engine.normalize(msg)
     intent = engine.clf.predict(engine.vec.transform([txt]))[0]
-    ents = engine.matcher.extract(txt)  # 수정된 위치
+    ents = engine.matcher.extract(txt)
+
     print(f"사용자 입력: {msg}")
     print(f"정규화된 입력: {txt}")
     print(f"의도 분류 결과: {intent}")
     print(f"추출된 개체: {ents}")
 
-    answer = engine.kogpt_answer(txt, intent, ents)
+    handler = intent_handlers.get(intent)
+    if handler:
+        answer = handler(db, ents)
+    else:
+        answer = "죄송합니다. 해당 의도에 대한 답변을 준비 중입니다."
+
     return {"intent": intent, "entities": ents, "answer": answer}
+#@app.post("/api/chat")
+#async def chat(msg: str = Body(..., embed=True)):
+#    if not msg.strip():
+#       raise HTTPException(status_code=400, detail="메시지가 비어 있습니다.")
+#    engine.load_models()
+#    
+#    txt = engine.normalize(msg)
+#    intent = engine.clf.predict(engine.vec.transform([txt]))[0]
+#    ents = engine.matcher.extract(txt) 
+#    print(f"사용자 입력: {msg}")
+#    print(f"정규화된 입력: {txt}")
+#    print(f"의도 분류 결과: {intent}")
+#    print(f"추출된 개체: {ents}")
+#
+#    answer = engine.kogpt_answer(txt, intent, ents)
+#    return {"intent": intent, "entities": ents, "answer": answer}
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=True)
