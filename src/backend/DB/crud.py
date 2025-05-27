@@ -4,29 +4,13 @@
 from sqlalchemy.orm import Session
 from DB.models import ChatLog
 
-def insert_chat_log(db: Session, user_id: str, message: str):
-    new_log = ChatLog(user_id=user_id, message=message)
-    db.add(new_log)
+def save_chat(db: Session, user_input: str, bot_response: str):
+    chat = ChatLog(user_input=user_input, bot_response=bot_response)
+    db.add(chat)
     db.commit()
-    db.refresh(new_log)
-    return new_log
+    db.refresh(chat)
+    return chat
 
-def get_chat_logs_by_user(db: Session, user_id: str):
-    return db.query(ChatLog).filter(ChatLog.user_id == user_id).all()
-
-def update_chat_message(db: Session, log_id: int, new_message: str):
-    chat_log = db.query(ChatLog).filter(ChatLog.id == log_id).first()
-    if chat_log:
-        chat_log.message = new_message
-        db.commit()
-        db.refresh(chat_log)
-        return chat_log
-    return None
-
-def delete_chat_log(db: Session, log_id: int):
-    chat_log = db.query(ChatLog).filter(ChatLog.id == log_id).first()
-    if chat_log:
-        db.delete(chat_log)
-        db.commit()
-        return True
-    return False
+# 최근 대화 기록 가져오기
+def get_chats(db: Session, skip: int = 0, limit: int = 10):
+    return db.query(ChatLog).offset(skip).limit(limit).all()

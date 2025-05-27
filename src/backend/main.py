@@ -109,14 +109,31 @@ def root():
     return {"message": "Hello from NLP engine!"}
 
 # 챗봇 API 엔드포인트
+#@app.post("/api/chat")
+#async def chat(msg: str = Body(..., embed=True)):
+#    if not msg.strip():
+#        raise HTTPException(status_code=400, detail="메시지가 비어 있습니다.")
+#    engine.load_models()
+#    txt = engine.normalize(msg)
+#    intent = engine.clf.predict(engine.vec.transform([txt]))[0]
+#    ents = engine.matcher.extract(txt)
+#    answer = engine.kogpt_answer(txt, intent, ents)
+#    return {"intent": intent, "entities": ents, "answer": answer}
+
 @app.post("/api/chat")
 async def chat(msg: str = Body(..., embed=True)):
     if not msg.strip():
         raise HTTPException(status_code=400, detail="메시지가 비어 있습니다.")
     engine.load_models()
+    
     txt = engine.normalize(msg)
     intent = engine.clf.predict(engine.vec.transform([txt]))[0]
-    ents = engine.matcher.extract(txt)
+    ents = engine.matcher.extract(txt)  # 수정된 위치
+    print(f"사용자 입력: {msg}")
+    print(f"정규화된 입력: {txt}")
+    print(f"의도 분류 결과: {intent}")
+    print(f"추출된 개체: {ents}")
+
     answer = engine.kogpt_answer(txt, intent, ents)
     return {"intent": intent, "entities": ents, "answer": answer}
 

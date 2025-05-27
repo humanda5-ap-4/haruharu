@@ -59,7 +59,7 @@ class EntityMatcher:
                 })
         return ents
 
-# — 슬랭(normalize) ----------------------------------------------------
+## — 슬랭(normalize) ----------------------------------------------------
 slang = json.load(open("data/slang.json", encoding="utf-8"))
 def normalize(txt: str) -> str:
     for k, v in slang.items():

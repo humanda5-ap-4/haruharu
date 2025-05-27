@@ -1,26 +1,15 @@
 #DB연결 함수         - 전현준님
-
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://chatuser:chatpass123!@localhost:3306/chat_logs?charset=utf8mb4"
+DATABASE_URL = "mysql+pymysql://humanda5:humanda5@192.168.0.73:3306/chatbot"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    pool_pre_ping=True,
-    future=True,
-)
-
+engine = create_engine(DATABASE_URL, echo=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Dependency for FastAPI
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+Base = declarative_base()
 
 ###/ 
 # 
