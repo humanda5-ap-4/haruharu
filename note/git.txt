@@ -1,3 +1,29 @@
 git pull --rebase origin main
 git push origin main
 
+# 1. v1 브랜치 생성과 동시에 전환
+git checkout -b v1
+
+# 2. 원격에 v1 브랜치 푸시
+git push -u origin v1
+
+
+| 작업         | 명령어                                      |
+| ---------- | ---------------------------------------- |
+| 현재 브랜치 확인  | `git branch`                             |
+| 다른 브랜치로 전환 | `git checkout main` 또는 `git checkout v1` |
+| 변경사항 커밋    | `git add . && git commit -m "메시지"`       |
+| 원격 푸시      | `git push` (현재 브랜치 기준)                   |
+
+
+협업
+git checkout -b v1_NAME
+git push -u origin v1_NAME
+
+머지
+git checkout v1
+git pull origin v1
+git merge v1_shs
+git merge v1_xxx
+git merge v1_yyy
+git push origin v1 -- 최종

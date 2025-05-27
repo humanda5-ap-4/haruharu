@@ -10,7 +10,8 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+#dist/
+#node_modules/ #
 downloads/
 eggs/
 .eggs/
@@ -253,7 +254,11 @@ outputs/
 !docs/planning/*.xlsx
 !docs/meetings/*.hwp
 !src/backend/nlp/data/*.json
+!src/backend/data/*.json
+!src/backend/data/splits/*.json
 !src/frontend/*.json
+!src/backend/nlu/*.joblib
+!src/backend/services/__pycache__/*.pyc
 
 
 *.xlsx merge=ours
