@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // src/pages/SearchApp.tsx
 // import React, { useState } from "react";
 import { useState } from "react"; 
@@ -7,6 +8,12 @@ import axios from "axios";
 const API_BASE_URL = "http://localhost:8000";
 
 
+=======
+import { useState } from 'react';
+import axios from "axios";
+
+
+>>>>>>> origin/v1_sjy
 const SearchApp = () => {
   const [userInput, setUserInput] = useState("");
   const [result, setResult] = useState<any>(null);
