@@ -55,7 +55,7 @@ def load_models():
         print("[Load] Done.")
 
 # 슬랭 정규화
-with open("data/slang.json", encoding="utf-8") as f:
+with open("src/backend/data/slang.json", encoding="utf-8") as f:
     slang = json.load(f)
 
 def normalize(txt: str) -> str:
