@@ -1,3 +1,4 @@
+https://adoptium.net/download/ -- jdk설치, PATH 및 시스템 환경변수 JAVA_HOME 설정
 ap/src/backend/requirements.txt -- Python 백엔드용 의존성파일
 ap/src/frontend/package.json -- React 프론트엔드용
 

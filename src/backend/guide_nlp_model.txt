@@ -1,0 +1,42 @@
+1. pip install -r requirement
+2. ollama model download --- https://ollama.com/download
+3. 환경변수 PATH에 "C:\Users\ <User name> \AppData\Local\Programs\Ollama\" 추가
+4. vs code, cmd 재실행
+5. ollama --version 확인
+6. ollama pull gemma:2b
+
+7. python backend/CLI_test.py --preprocess
+8. python backend/CLI_test.py --train
+9. python backend/CLI_test.py --test "질문할 문장"      
+    -intent, entity test
+10. python backend/CLI_test.py --ask "질문할 문장"
+
+
+✅ Intent 분류: Sentence-BERT + Logistic Regression
+✅ Entity 추출: HuggingFace 기반 NER 파이프라인 (dslim/bert-base-NER)
+✅ 기존 기능과 통합 유지 (SQL 생성, 추천문 생성 등)
+
+AP/
+├── backend/               # FastAPI 백엔드
+│   ├── main.py            # 실행 엔트리포인트
+│   ├── app/               # API 관련 디렉토리
+│   │   ├── routes/        # /chat 같은 API 엔드포인트
+│   │   ├── schemas.py     # Pydantic 모델
+│   │   └── __init__.py
+│   ├── intents/           # Intent별 처리 로직
+│   ├── common/            # 공통 엔진/유틸
+│   ├── db.py              # DB 연결
+│   └── nlu/               # 모델 파일 (joblib 등)
+│
+├── frontend/              # React 프론트엔드
+│   ├── src/
+│   │   └── ...
+│   └── package.json
+
+✅ 1. nlp_final.py → 역할별로 모듈로 분해
+기존 코드 위치	분리 대상	옮길 위치
+Entity 관련	클래스/NER	common/entity.py
+NLUEngine 클래스	Intent 분류 & Entity 추출	common/nlu_engine.py
+generate_response	Ollama 응답	common/response.py
+generate_sql, generate_recommendation_by_intent	축제 전용 처리	intents/festival.py
+main()	CLI 테스트	별도 유지 or scripts/cli_test.py 로 이동
