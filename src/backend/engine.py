@@ -15,15 +15,15 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 # — 전처리 함수 -------------------------------------------------------
 def preprocess_data():
     print("[Preprocess] Splitting intent dataset...")
-    ints = pd.read_json("data/intent_dataset.json", encoding="utf-8")
+    ints = pd.read_json("src/backend/data/intent_dataset.json", encoding="utf-8")
     ints = ints.sample(frac=1, random_state=42)
     train, valid, test = np.split(ints, [int(.8*len(ints)), int(.9*len(ints))])
-    splits_dir = pathlib.Path("data/splits")
+    splits_dir = pathlib.Path("src/backend/data/splits")
     splits_dir.mkdir(parents=True, exist_ok=True)
     train.to_json(splits_dir / "intent_train.json", orient="records", force_ascii=False)
 
     print("[Preprocess] Building entity regex patterns...")
-    gaz = json.load(open("data/entity_dataset.json", encoding="utf-8"))
+    gaz = json.load(open("src/backend/data/entity_dataset.json", encoding="utf-8"))
     patterns = {k: re.compile("|".join(map(re.escape, v))) for k, v in gaz.items()}
     with open(splits_dir / "entity_regex.json", "w", encoding="utf-8") as f:
         json.dump({k: v.pattern for k, v in patterns.items()}, f, ensure_ascii=False, indent=2)
@@ -60,11 +60,11 @@ class EntityMatcher:
         return ents
 
 ## — 슬랭(normalize) ----------------------------------------------------
-slang = json.load(open("data/slang.json", encoding="utf-8"))
-def normalize(txt: str) -> str:
-    for k, v in slang.items():
-        txt = re.sub(fr"\b{k}\b", v, txt)
-    return txt
+# slang = json.load(open("data/slang.json", encoding="utf-8"))
+# def normalize(txt: str) -> str:
+#     for k, v in slang.items():
+#         txt = re.sub(fr"\b{k}\b", v, txt)
+#     return txt
 
 # — KoGPT 답변 생성 ---------------------------------------------------
 def kogpt_answer(txt, intent, ents):
