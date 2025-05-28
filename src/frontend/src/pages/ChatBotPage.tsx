@@ -172,6 +172,8 @@ const ChatBotPage: React.FC = () => {
             src={topicIconMap[topic]}
             alt="선택 주제 아이콘"
             className="title-topic-icon"
+            style={{ cursor: 'pointer' }}
+            onClick={() => navigate('/topic-select')}
           />
         )}
       </div>

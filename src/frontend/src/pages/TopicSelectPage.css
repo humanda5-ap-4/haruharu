@@ -1,0 +1,104 @@
+/* --- 배경 이미지 --- */
+.topic-select-background {
+  background: url('/nature_scene_part.png') center/cover no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.topic-select-logo {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  z-index: 10;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.topic-select-icons-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* 세로 중앙 */
+  width: 100%;
+}
+
+.topic-select-icons {
+  display: flex;
+  gap: 32px;
+  margin-top: 100px;
+  margin-bottom: 32px;
+  justify-content: center;
+}
+
+.topic-select-icons {
+  display: flex;
+  gap: 32px;
+  margin-top: 70px;
+  margin-bottom: 32px;
+}
+
+.topic-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  background: rgba(255,255,255,0.01);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.topic-icon.selected {
+  box-shadow: 0 0 12px 3px #ffe400;
+  border-color: #ffe400;
+  transform: scale(1.13);
+}
+
+.topic-comment-bubble {
+  background: rgba(34, 66, 0, 0.18);
+  color: #9cff7a;
+  padding: 16px 30px;
+  border-radius: 16px;
+  border: 2px solid #9cff7a;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  min-width: 140px;
+  margin-bottom: 30px;
+  margin-top: 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  backdrop-filter: blur(2px);
+}
+
+.go-storage-btn {
+  background: #ffe400;
+  color: #1d3f00;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 0;
+  width: 90%;
+  max-width: 150px;
+  margin: 0 auto;
+  display: block;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.go-storage-btn:disabled {
+  background: #c5c5c5;
+  color: #888;
+  cursor: not-allowed;
+}

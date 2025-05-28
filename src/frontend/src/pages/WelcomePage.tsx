@@ -44,7 +44,13 @@ const WelcomePage: React.FC = () => {
   return (
     <div className="chatbot-container welcome-background">
       {/* 오른쪽 상단 로고 */}
-      <img src="/logo.png" alt="hu 로고" className="welcome-logo-inside" />
+      <img 
+        src="/logo.png" 
+        alt="hu 로고" 
+        className="welcome-logo-inside"
+        style={{ cursor: 'pointer' }}
+        onClick={() => navigate('/topic-select')}
+      />
 
       {/* 주제 선택 아이콘  */}
       <div className="fruit-center-box">

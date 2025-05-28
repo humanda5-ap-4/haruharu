@@ -7,10 +7,10 @@
 
 ## 🔍 주요 기능
 
-- 사용자가 자연어로 검색 요청을 입력하면, 앱이 자동으로 주제(축제, 공연 등)를 인식하여 관련 정보를 검색합니다.
+- 사용자가 검색하고 싶은 주제를 선택 후 메시지를 입력해 검색 요청하면, 앱이 주제(축제, 공연 등)를 인식하여 관련 정보를 검색합니다.
 - 인식된 주제와 질의어를 바탕으로 FastAPI 백엔드에 GET 요청을 보내 결과를 표시합니다.
 - 예: "서울 장미 축제 알려줘" → `category=축제`, `query=서울 장미`
-- 결과로는 축제명, 장소, 기간, 거리 정보가 표시됩니다.
+   결과로는 축제명, 장소, 기간, 거리 정보가 표시됩니다.
 
 ---
 
@@ -19,22 +19,27 @@
 ```
 frontend/
 ├── public/             
-│     └── logo,fruit.png...    # 로고와 아이콘
+│     └── logo,fruit.png...    	    # 로고와 아이콘
 │
 ├── src/
-│    ├── assets/               # 이미지, 정적 파일
-│    ├── pages/                # 라우팅되는 주요 페이지
-│    │    ├── SeacherApp.tsx   # 예시 페이지
-│    │    ├── WelcomePage.tsx  # 첫 화면 페이지
-│    │    └── ChatBotPage.tsx  # 사용되는 챗 페이지
+│    ├── assets/                	# 이미지, 정적 파일
+│    ├── pages/                 	# 라우팅되는 주요 페이지
+│    │    ├─ WelcomePage.tsx    	# 메인(주제선택) 페이지
+│    │    ├─ WelcomePage.css    	# WelcomePage 전용 스타일
+│    │    ├─ ChatBotPage.tsx    	# 챗봇 메인 페이지
+│    │    ├─ ChatBotPage.css   	    # ChatBotPage 전용 스타일
+│    │    ├─ TopicSelectPage.tsx    # 보조(주제선택) 페이지
+│    │    ├─ TopicSelectPage.css    # TopicSelectPage 전용 스타일
+│    │    └─ Common.css        	    # 공통 스타일
 │    │
-│    ├── App.tsx               # 라우터 설정 포함
-│    └── main.tsx              # 앱 진입점
+│    ├── App.tsx                 	# 라우터 설정 포함
+│    └── main.tsx                	# React 진입점
 │
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
+├── index.html			            # 웹페이지 뼈대
+├── package.json		    	    # Node 기반 환경 설정 파일
+├── tsconfig.json		    	    # TypeScript 컴파일 옵션을 정의한 설정 파일
+└── vite.config.ts			        # 타입 환경파일
+
 ```
 
 ---
@@ -70,8 +75,10 @@ npm run dev:all
 ---
 
 ## 프로젝트 구조 요약
-- `main.tsx`: 앱 진입점
+- `index.html`: 웹페이지 뼈대
+- `main.tsx`: React 진입점
 - `App.tsx`: 전체 컴포넌트 트리 루트
-- `pages/SearchApp.tsx`: 현재 메인 화면
-- `assets/`: 이미지 등 정적 파일 저장
+- `pages/WelcomePage.tsx `: 주제선택 페이지
+- `pages/ChatBotPage.tsx `: 챗봇 메인 페이지
+- `public/`: 이미지, 정적 파일 저장. 직접 URL로 접근 가능.
 
