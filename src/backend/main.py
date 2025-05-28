@@ -1,5 +1,6 @@
 # sql
 
+import random
 from fastapi import Depends
 from sqlalchemy.orm import Session
 import DB.crud
@@ -19,6 +20,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import engine
 # FastAPI 초기화
+
+# src/backend/main.py
+from fastapi import FastAPI, Query, Request, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+import engine
+
 app = FastAPI()
 import uvicorn
 
@@ -28,7 +35,7 @@ import os
 # CORS 허용 (필요 시)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173","http://localhost:5174"],  # 실제 배포시에는 특정 origin으로 제한
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -130,7 +137,40 @@ def root():
 #    answer = engine.kogpt_answer(txt, intent, ents)
 #    return {"intent": intent, "entities": ents, "answer": answer}
 
-@app.post("/api/chat")
+
+#@app.post("/api/chat")
+#async def chat(msg: str = Body(..., embed=True)):
+#    if not msg.strip():
+#       raise HTTPException(status_code=400, detail="메시지가 비어 있습니다.")
+#    engine.load_models()
+#    
+#    txt = engine.normalize(msg)
+#    intent = engine.clf.predict(engine.vec.transform([txt]))[0]
+#    ents = engine.matcher.extract(txt) 
+#    print(f"사용자 입력: {msg}")
+#    print(f"정규화된 입력: {txt}")
+#    print(f"의도 분류 결과: {intent}")
+#    print(f"추출된 개체: {ents}")
+#
+#    answer = engine.kogpt_answer(txt, intent, ents)
+#    return {"intent": intent, "entities": ents, "answer": answer}
+default_responses = [
+    "아직 그 주제에 대해선 공부 중이에요. 조금만 기다려 주세요!",
+    "아쉽게도 지금은 답변을 준비하고 있어요. 곧 더 좋은 답변 드릴게요.",
+    "해당 내용에 대해선 더 알아보고 알려드릴게요!",
+    "그 부분에 대해선 지금 바로 답변을 드리기 어려워서 죄송해요.",
+    "조금만 기다려 주세요, 곧 더 정확한 정보를 드릴 수 있도록 할게요."
+]
+
+if __name__ == "__main__":
+    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=True)
+@app.on_event("startup")
+def startup_event():
+    print("[INFO] FastAPI 서버가 시작되었습니다.")
+    engine.load_models()
+    print(f"[INFO] main sees clf: {engine.clf}, vec: {engine.vec}")
+
+@app.post("/chat")
 async def chat(
     msg: str = Body(..., embed=True),
     db: Session = Depends(get_db)
@@ -153,25 +193,30 @@ async def chat(
     if handler:
         answer = handler(db, ents)
     else:
-        answer = "죄송합니다. 해당 의도에 대한 답변을 준비 중입니다."
+        answer = random.choice(default_responses)
 
     return {"intent": intent, "entities": ents, "answer": answer}
-#@app.post("/api/chat")
-#async def chat(msg: str = Body(..., embed=True)):
-#    if not msg.strip():
-#       raise HTTPException(status_code=400, detail="메시지가 비어 있습니다.")
-#    engine.load_models()
-#    
-#    txt = engine.normalize(msg)
-#    intent = engine.clf.predict(engine.vec.transform([txt]))[0]
-#    ents = engine.matcher.extract(txt) 
-#    print(f"사용자 입력: {msg}")
-#    print(f"정규화된 입력: {txt}")
-#    print(f"의도 분류 결과: {intent}")
-#    print(f"추출된 개체: {ents}")
-#
-#    answer = engine.kogpt_answer(txt, intent, ents)
-#    return {"intent": intent, "entities": ents, "answer": answer}
 
-if __name__ == "__main__":
-    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=True)
+
+# @app.post("/chat")
+# async def chat(request: Request):
+#     data = await request.json()
+#     msg = data.get("msg")
+#     # 실제 챗봇 답변 생성 로직으로 교체
+#     # 예시: 기존 search 함수 파이프라인 활용
+#     text = normalize(msg)
+#     intent = clf.predict(vec.transform([text]))[0]
+#     ents = matcher.extract(text)
+#     from engine import kogpt_tok, kogpt_model, device
+#     answer = kogpt_answer(text, intent, ents, kogpt_tok, kogpt_model, device)
+#     return {"answer": answer}
+
+# -- 확인용 코드 -- 
+# @app.get("/api/search")
+# def search(category: str = Query(...), query: str = Query(...)):
+#     text = normalize(query)
+#     intent = clf.predict(vec.transform([text]))[0]
+#     ents = matcher.extract(text)
+#     from engine import kogpt_tok, kogpt_model, device
+#     answer = kogpt_answer(text, intent, ents, kogpt_tok, kogpt_model, device)
+#     return {"result": answer}
