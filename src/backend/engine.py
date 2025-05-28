@@ -59,7 +59,8 @@ class EntityMatcher:
                 })
         return ents
 
-# — 슬랭(normalize) ----------------------------------------------------
+
+## — 슬랭(normalize) ----------------------------------------------------
 slang = json.load(open("data/slang.json", encoding="utf-8"))
 def normalize(txt: str) -> str:
     for k, v in slang.items():
@@ -67,23 +68,51 @@ def normalize(txt: str) -> str:
     return txt
 
 # — KoGPT 답변 생성 ---------------------------------------------------
-def kogpt_answer(user: str, intent: str, ents: list, tok, model, device: str) -> str:
+def kogpt_answer(txt, intent, ents):
     ent_str = ", ".join(f"{e['type']}:{e['value']}" for e in ents)
     prompt = (
-        f"[사용자]: {user}\n"
-        f"[의도]: {intent}\n"
-        f"[개체]: {ent_str}\n"
-        f"[챗봇]:"
+        f"사용자: {txt}\n"
+        f"의도: {intent}\n"
+        f"개체: {ent_str}\n"
+        f"답변:"
     )
-    inputs = tok(prompt, return_tensors="pt").to(device)
-    gen = model.generate(
+    inputs = kogpt_tok(prompt, return_tensors="pt").to(device)
+
+    gen = kogpt_model.generate(
         **inputs,
         max_new_tokens=64,
         do_sample=True,
         top_p=0.9,
         temperature=0.7,
+        eos_token_id=kogpt_tok.eos_token_id or kogpt_tok.pad_token_id,
+        pad_token_id=kogpt_tok.pad_token_id,
+        no_repeat_ngram_size=3,
+        repetition_penalty=1.2,
     )
-    return tok.decode(gen[0, inputs.input_ids.shape[1]:], skip_special_tokens=True)
+
+    decoded = kogpt_tok.decode(
+        gen[0, inputs.input_ids.shape[1]:],
+        skip_special_tokens=True
+    )
+    return decoded.strip()
+
+# def kogpt_answer(user: str, intent: str, ents: list, tok, model, device: str) -> str:
+#     ent_str = ", ".join(f"{e['type']}:{e['value']}" for e in ents)
+#     prompt = (
+#         f"[사용자]: {user}\n"
+#         f"[의도]: {intent}\n"
+#         f"[개체]: {ent_str}\n"
+#         f"[챗봇]:"
+#     )
+#     inputs = tok(prompt, return_tensors="pt").to(device)
+#     gen = model.generate(
+#         **inputs,
+#         max_new_tokens=64,
+#         do_sample=True,
+#         top_p=0.9,
+#         temperature=0.7,
+#     )
+#     return tok.decode(gen[0, inputs.input_ids.shape[1]:], skip_special_tokens=True)
 
 # — 지연 로딩용 전역 변수 및 로딩 함수 ------------------------------------
 vec = clf = matcher = kogpt_tok = kogpt_model = device = None

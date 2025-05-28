@@ -1,0 +1,96 @@
+ /* --- title --- */
+.title-box {
+  display: flex;
+  justify-content: space-between; /* 양쪽 정렬 */ 
+  background: #d8f6fa;
+  border-radius: 18px;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;                 /* 부모 너비에 맞춤 */
+  box-sizing: border-box;
+  min-height: 40px;            /* 높이 고정(선택), 너무 작으면 40~48px 추천 */
+}
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.title-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;              /* baseline 문제 방지 */
+}
+.title-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #222;
+  line-height: 1;              /* 세로 맞춤, 필요시 32px로 맞춰도 됨 */
+  display: flex;               /* flex로 세로 중앙 맞춤 */
+  align-items: center;
+}
+.title-topic-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+ /* --------------------- 채팅박스 ---------------------- */
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 16px 16px 0 0;
+  padding: 24px 18px 10px 18px;
+  background: #d8f6fa;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chat-message.bot {
+  align-self: flex-start;
+  background: #c7e5be;
+  color: #2b3d1d;
+  border-radius: 18px 18px 18px 6px;
+  padding: 18px 20px;
+  margin-bottom: 8px;
+  max-width: 80%;
+  position: relative;
+  box-shadow: 0 1px 4px rgba(100, 180, 100, 0.05);
+}
+.chat-message.bot::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #c7e5be;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background: #fff8b8;
+  color: #5a4b1c;
+  border-radius: 18px 18px 6px 18px;
+  padding: 18px 20px;
+  margin-bottom: 8px;
+  max-width: 80%;
+  box-shadow: 0 1px 4px rgba(200, 170, 50, 0.05);
+}
+.chat-message.user::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #fff8b8;
+}
