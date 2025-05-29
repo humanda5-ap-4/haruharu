@@ -12,16 +12,17 @@ function Chat() {
     setInput('');
 
     try {
-      const res = await fetch('http://localhost:8000/api/chat', {
+      const res = await fetch('http://localhost:8000/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ msg: input }),
+        body: JSON.stringify({ query: input }),
       });
 
       const data = await res.json();
       const botMessage = { sender: 'bot', text: data.answer };
+      console.log(data.answer);
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
@@ -40,7 +41,7 @@ function Chat() {
         ))}
       </div>
       <input
-        type="text"
+        type="text"   
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSend()}

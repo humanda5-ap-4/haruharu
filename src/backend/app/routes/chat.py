@@ -24,3 +24,5 @@ def chat(req: ChatRequest):
     }.get(intent, festival.handle)  # 기본 핸들러로 festival 임시지정
     answer = handler(req.query, entities)
     return ChatResponse(intent=intent, entities=[e.__dict__ for e in entities], answer=answer)
+
+
