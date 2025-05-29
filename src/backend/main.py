@@ -1,30 +1,20 @@
-# sql
-
-import random
-from fastapi import Depends
-from sqlalchemy.orm import Session
-import DB.crud
-from DB.services import intent_handlers
-
-from DB.db import get_db
-
-
-from fastapi import FastAPI, Body, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-import joblib
+import os
 import re
 import json
+import random
+import joblib
 import torch
+import uvicorn
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import engine
-# FastAPI 초기화
 
-# src/backend/main.py
-from fastapi import FastAPI, Query, Request, HTTPException
+from fastapi import FastAPI, Body, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-import engine
+from sqlalchemy.orm import Session
+from sentence_transformers import SentenceTransformer
+
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from DB.db import get_db
+from DB.services import intent_handlers
 
 app = FastAPI()
 import uvicorn
@@ -43,10 +33,12 @@ app.add_middleware(
 
 # 모델 및 컴포넌트 지연 로딩을 위한 변수
 vec, clf, matcher, kogpt_tok, kogpt_model, device = [None] * 6
-
+model = None
+db_embeddings = []
+db_stocks = []
 # 모델 로딩 함수
 def load_models():
-    global vec, clf, matcher, kogpt_tok, kogpt_model, device
+    global vec, clf, matcher, kogpt_tok, kogpt_model, device, model, db_embeddings, db_stocks
     if vec is None or clf is None:
         print("[Load] Loading intent model and vectorizer...")
         vec = joblib.load("nlu/intent_vec.joblib")
@@ -59,7 +51,25 @@ def load_models():
         MODEL_NAME = "skt/kogpt2-base-v2"
         kogpt_tok = AutoTokenizer.from_pretrained(MODEL_NAME)
         kogpt_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME).to(device)
-        print("[Load] Done.")
+        print("[Load] Loading sentence-transformers model...")
+        model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+        
+        print("[Load] Loading DB stocks data and computing embeddings...")
+        # 예시: DB에서 주식명만 가져와 리스트로 세팅
+        # TODO: 실제 DB 쿼리로 변경 필요
+        db_stocks = ["삼성전자", "현대차", "카카오", "네이버", "LG전자"]
+        db_embeddings = model.encode(db_stocks, convert_to_tensor=True)
+        
+        print("[Load] All models loaded.")
+
+# 추가 
+# 임베딩 기반 유사도 검색 함수
+def find_most_similar(query: str):
+    query_vec = model.encode(query, convert_to_tensor=True)
+    cos_sim = torch.nn.functional.cosine_similarity(query_vec, db_embeddings)
+    max_idx = torch.argmax(cos_sim).item()
+    return db_stocks[max_idx], cos_sim[max_idx].item()
+
 
 # 슬랭 정규화
 with open("data/slang.json", encoding="utf-8") as f:
@@ -154,35 +164,24 @@ def root():
 #
 #    answer = engine.kogpt_answer(txt, intent, ents)
 #    return {"intent": intent, "entities": ents, "answer": answer}
-default_responses = [
-    "아직 그 주제에 대해선 공부 중이에요. 조금만 기다려 주세요!",
-    "아쉽게도 지금은 답변을 준비하고 있어요. 곧 더 좋은 답변 드릴게요.",
-    "해당 내용에 대해선 더 알아보고 알려드릴게요!",
-    "그 부분에 대해선 지금 바로 답변을 드리기 어려워서 죄송해요.",
-    "조금만 기다려 주세요, 곧 더 정확한 정보를 드릴 수 있도록 할게요."
-]
 
-if __name__ == "__main__":
-    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=True)
 @app.on_event("startup")
 def startup_event():
     print("[INFO] FastAPI 서버가 시작되었습니다.")
-    engine.load_models()
-    print(f"[INFO] main sees clf: {engine.clf}, vec: {engine.vec}")
+    load_models()
+    print(f"[INFO] main sees clf: {clf}, vec: {vec}")
+
 
 @app.post("/chat")
-async def chat(
-    msg: str = Body(..., embed=True),
-    db: Session = Depends(get_db)
-):
+async def chat(msg: str = Body(..., embed=True), db: Session = Depends(get_db)):
     if not msg.strip():
         return {"error": "메시지가 비어 있습니다."}
 
-    engine.load_models()
+    load_models()
 
-    txt = engine.normalize(msg)
-    intent = engine.clf.predict(engine.vec.transform([txt]))[0]
-    ents = engine.matcher.extract(txt)
+    txt = normalize(msg)
+    intent = clf.predict(vec.transform([txt]))[0]
+    ents = extract_entities(txt)
 
     print(f"사용자 입력: {msg}")
     print(f"정규화된 입력: {txt}")
@@ -196,7 +195,6 @@ async def chat(
         answer = random.choice(default_responses)
 
     return {"intent": intent, "entities": ents, "answer": answer}
-
 
 # @app.post("/chat")
 # async def chat(request: Request):
@@ -220,3 +218,24 @@ async def chat(
 #     from engine import kogpt_tok, kogpt_model, device
 #     answer = kogpt_answer(text, intent, ents, kogpt_tok, kogpt_model, device)
 #     return {"result": answer}
+
+default_responses = [
+    "아직 그 주제에 대해선 공부 중이에요. 조금만 기다려 주세요!",
+    "아쉽게도 지금은 답변을 준비하고 있어요. 곧 더 좋은 답변 드릴게요.",
+    "해당 내용에 대해선 더 알아보고 알려드릴게요!",
+    "그 부분에 대해선 지금 바로 답변을 드리기 어려워서 죄송해요.",
+    "조금만 기다려 주세요, 곧 더 정확한 정보를 드릴 수 있도록 할게요.",
+    "제가 아직 배우는 중인 내용이에요. 다음엔 더 나은 답변 드릴 수 있도록 할게요.",
+    "그 질문은 조금 어려운 것 같아요. 더 알아보고 올게요!",
+    "이해는 했는데 확실한 답변을 위해 조금만 시간 주세요!",
+    "지금은 정확한 정보를 드리기 어렵지만, 계속 학습 중이에요!",
+    "그 주제는 아직 공부가 덜 되었어요. 조만간 더 나은 답변 드릴 수 있도록 노력할게요.",
+    "아직 정보가 부족해서 바로 답변드리긴 어렵지만, 관심 가져주셔서 감사해요!",
+    "해당 질문에 대한 답변은 준비 중이에요. 더 많이 배워서 꼭 알려드릴게요!",
+    "잠깐만요! 그 내용은 아직 공부 중이라 다음에 꼭 알려드릴게요!",
+    "지금은 어려운 질문이지만, 열심히 배우고 있으니 조금만 기다려 주세요!",
+]
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

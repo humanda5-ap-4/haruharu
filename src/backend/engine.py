@@ -60,11 +60,12 @@ class EntityMatcher:
         return ents
 
 ## — 슬랭(normalize) ----------------------------------------------------
-slang = json.load(open("data/slang.json", encoding="utf-8"))
-def normalize(txt: str) -> str:
-    for k, v in slang.items():
-        txt = re.sub(fr"\b{k}\b", v, txt)
-    return txt
+#
+#   slang = json.load(open("data/slang.json", encoding="utf-8"))
+#   def normalize(txt: str) -> str:
+#   for k, v in slang.items():
+#       txt = re.sub(fr"\b{k}\b", v, txt)
+#n  return txt
 
 # — KoGPT 답변 생성 ---------------------------------------------------
 def kogpt_answer(txt, intent, ents):
