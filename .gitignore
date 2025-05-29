@@ -258,7 +258,7 @@ ner_model_kykim/
 !src/backend/nlp/data/*.json
 !src/frontend/*.json
 !src/backend/nlp/training/dataset/*.json
-
+!src/backend/data/*.json
 *.xlsx merge=ours
 
 #임시파일 제거
