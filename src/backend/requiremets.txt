@@ -10,3 +10,4 @@ vertexai
 sentence-transformers
 transformers
 torch
+requests
