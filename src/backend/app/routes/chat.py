@@ -2,7 +2,8 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from common.nlu_engine import NLUEngine
-from intents import festival  # 기타 스팀, 주식, 리니지2 등도 import
+from intents import INTENT_HANDLER  # 기타 스팀, 주식, 리니지2 등도 import
+from intents import common # 예외처리
 
 router = APIRouter()
 
@@ -18,9 +19,10 @@ class ChatResponse(BaseModel):
 def chat(req: ChatRequest):
     intent = NLUEngine.classify_intent(req.query)
     entities = NLUEngine.extract_entities(req.query)
-    handler = {
-        "festival_query": festival.handle,
-        "외부활동": festival.handle,
-    }.get(intent, festival.handle)  # 기본 핸들러로 festival 임시지정
+    handler = INTENT_HANDLER.get(intent, common.handle)  # 예외처리
     answer = handler(req.query, entities)
-    return ChatResponse(intent=intent, entities=[e.__dict__ for e in entities], answer=answer)
+    return ChatResponse(
+        intent=intent,
+        entities=[e.__dict__ for e in entities],
+        answer=answer
+    )

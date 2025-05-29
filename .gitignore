@@ -240,13 +240,16 @@ venv/
 .vscode/
 .idea/
 
-# 모델 및 결과 저장
+# 모델 및 결과 저장 
 models/
 checkpoints/
 outputs/
 ner_model/
 ner_model_kykim/
 
+# 개인파일
+.stock.py
+src/backend/.stock.py
 
 # data 폴더에 있는 shared.xlsx는 예외 처리 (Git에 포함)
 !docs/team/team.xlsx
