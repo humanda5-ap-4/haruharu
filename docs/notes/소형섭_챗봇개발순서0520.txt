@@ -1,0 +1,43 @@
+모델은 HuggingFace 를 사용하되 기본적인 한국어 문체로 학습하고
+SNS/웹 구어체에는 따로 파인튜닝해서 학습강화
+
+🚀 고급 전략 (선택 사항)
+방법	설명
+도메인별 데이터로 multi-task learning	formal + informal task 동시 학습
+prompt 기반 구분 처리	문맥에 따라 어떤 말투인지 구분 가능하게 설정
+inference 시 context-aware 모델 사용	질문 말투 등 예측 정확도 향상 가능
+
+
+HuggingFace에서 한국어 지원하는 모델 중 추천:
+
+KoGPT (by Kakao)
+
+KoBERT, KoELECTRA (by SKT)
+
+open-ko-llm 시리즈
+
+Polyglot-Ko (Eleuther 기반 한국어 버전)
+
+(혹은 LLaMA2 기반 한국어 파인튜닝된 모델)
+
+👉 처음엔 KoGPT나 open-ko-llm을 권장. 문장 생성에 강함.
+
+ 3. 초기 학습 – 한국어 문체
+데이터 준비
+공공 데이터셋 (AIHub, AI허브, AI 데이터 챌린지 등)
+
+뉴스 기사, 위키 문서, 블로그 글 등
+
+HuggingFace Datasets 사용 가능
+
+학습 방식
+Language Modeling (Auto-regressive 혹은 Masked)
+
+Fine-tuning with Trainer (Transformers 라이브러리)
+
+4. 각 주제에 맞는 파인튜닝
+SNS/웹 구어체 수집 (예: 트위터, 카카오톡 형태, 커뮤니티)
+
+정제: 욕설/비속어, 개인정보, 오류 제거
+
+챗봇 형태로 Instruction 기반 학습 데이터 구성

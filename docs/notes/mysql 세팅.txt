@@ -1,0 +1,22 @@
+cmd 관리자권한실행
+cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+mysqld --install
+net start mysql
+--오류시
+mysqld --initialize --console -- data폴더 초기화 및 임시비밀번호 발급
+net start mysql
+C:\ProgramData\MySQL\MySQL Server 8.0\Data\[컴퓨터이름].err
+err 파일 메모장으로열어서 임시비번확인 
+ALTER USER 'root'@'localhost' IDENTIFIED BY '새비밀번호';
+ALTER USER 'root'@'localhost' PASSWORD EXPIRE NEVER; 둘중하나
+
+
+만약 비번이 없으면
+net stop mysql
+mysqld --skip-grant-tables
+mysql -u root
+FLUSH PRIVILEGES;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '새비밀번호';
+net start mysql
+mysql -u root -p
+

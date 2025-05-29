@@ -1,0 +1,27 @@
+캐글 expert kaggle achievements 노력
+
+intent_dataset.json, entity_dataset.json 생성
+preprocess.py → train_intent_model.py → inference.py 실행
+
+1. 전처리 및 토크나이징
+	-intent_dataset.json에서 text는 input, intent는 라벨로 분리 및 문장은 토크나이징
+	-preprocess.py (->intent_label_encoder.py, intent_tokenized.pkl), test_preprocess.py로 테스트
+
+	train_intent_model.py	-Intent 분류모델 학습(LSTM, BERT..)
+	inference.py		-실제 입력 문장 ->intent 예측
+	preprocess_ner.py		-NER학습을 위한 BIO 데이터 자동 생성
+	train_ner_model.py		-개체명 인식 모델 학습
+
+2. 라벨 인코딩
+	-토큰화된 문장을 intent class로 출력 / LSTM+Dense or BERT기반 모델
+3. 모델학습 ( Intent 분류모델, Entity 인식모델(개체명 인식모델: NER) )
+4. 모델 저장 및 추론모듈
+5. 대화 시나리오 연결
+6. 웹/앱 연동 및 UI 구축
+7. 사용자 발화를 저장하고 feedback loop로 지속적 성능 개성
+8. GPT 기반 자연어 응답 생성기와 하이브리드 구조 결합 가능
+
+
+사용 모델 : kykim/bert-kor-base
+BERT 계열 모델 사용 시 KoBERT, KoELECTRA, KLUE 등 한국어 특화 모델 사용 추천
+entity tagging이 필요하면 NLTK 또는 직접 BIO tag label 생성기로 만들어야 함

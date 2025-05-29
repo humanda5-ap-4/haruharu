@@ -10,8 +10,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-#dist/
-#node_modules/ #
+dist/
 downloads/
 eggs/
 .eggs/
@@ -245,6 +244,9 @@ venv/
 models/
 checkpoints/
 outputs/
+ner_model/
+ner_model_kykim/
+
 
 # data 폴더에 있는 shared.xlsx는 예외 처리 (Git에 포함)
 !docs/team/team.xlsx
@@ -254,12 +256,8 @@ outputs/
 !docs/planning/*.xlsx
 !docs/meetings/*.hwp
 !src/backend/nlp/data/*.json
-!src/backend/data/*.json
-!src/backend/data/splits/*.json
 !src/frontend/*.json
-!src/backend/nlu/*.joblib
-!src/backend/services/__pycache__/*.pyc
-
+!src/backend/nlp/training/dataset/*.json
 
 *.xlsx merge=ours
 
