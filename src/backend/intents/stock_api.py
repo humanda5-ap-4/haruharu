@@ -3,7 +3,7 @@ import requests
 import time
 import json
 from dotenv import load_dotenv
-from stock_utils import get_stock_code_by_name, get_name_by_stock_code
+from .stock_utils import get_stock_code_by_name, get_name_by_stock_code
 
 # ⏰ 여유 시간 (5분) & 유효기간 (24시간)
 TOKEN_EXPIRE_BUFFER = 300

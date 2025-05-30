@@ -26,7 +26,7 @@ const ChatBotPage: React.FC = () => {
     festival: '/fruit1.png',
     steam: '/fruit2.png',
     lineage: '/fruit3.png',
-    etc: '/fruit4.png',
+    stock: '/fruit4.png',
   };
   
   const initialMessage = new URLSearchParams(location.search).get('msg');
@@ -70,7 +70,7 @@ const ChatBotPage: React.FC = () => {
     let index = 0;
     const typeNextChar = () => {
       if (index < text.length) {
-        setTypingMessage(prev => prev + text[index]);
+        setTypingMessage(text.slice(0, index + 1));
         index++;
         setTimeout(typeNextChar, 40);
       } else {
@@ -89,7 +89,7 @@ const ChatBotPage: React.FC = () => {
     setMessages(prev => [...prev, { type: 'user', text: userInput }]);
 
     try {
-      const res = await axios.post('http://localhost:8000/chat', { msg: userInput });
+      const res = await axios.post('/chat', { query: userInput });
       showTypingEffect(res.data?.answer);
     } catch {
       showTypingEffect('오류가 발생했습니다.');
@@ -126,7 +126,7 @@ const ChatBotPage: React.FC = () => {
       setIsLoading(true);
       setMessages(prev => [...prev, { type: 'user', text: initialMessage }]);
       try {
-        const res = await axios.post('http://localhost:8000/chat', { msg: initialMessage });
+        const res = await axios.post('/chat', { query: initialMessage });
         showTypingEffect(res.data?.answer);
       } catch {
         showTypingEffect('오류가 발생했습니다.');

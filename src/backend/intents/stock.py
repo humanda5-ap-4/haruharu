@@ -1,6 +1,6 @@
 from common.response import generate_response
-from stock_api import get_access_token, get_stock_info
-from stock_utils import get_stock_code_by_name
+from .stock_api import get_access_token, get_stock_info
+from .stock_utils import get_stock_code_by_name
 
 PROMPT_TEMPLATE = """
 [{company} 관련 뉴스 요약]
