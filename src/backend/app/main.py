@@ -2,17 +2,12 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import chat
-
-app = FastAPI()
-
-import os   #.env 
-from dotenv import load_dotenv #.env
+from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
-appkey = os.getenv("APP_KEY")
-appsecret = os.getenv("APP_SECRET")
-
+app = FastAPI()
 
 origins = [
     "http://localhost:5173",
@@ -21,13 +16,11 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins= origins,  # React 앱 주소
+    allow_origins=origins,
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
 )
-
-
 
 @app.middleware("http")
 async def log_request(request: Request, call_next):
@@ -36,18 +29,4 @@ async def log_request(request: Request, call_next):
     response = await call_next(request)
     return response
 
-
 app.include_router(chat.router)
-
-
-
-"""
-react 연동
-"""
-# const res = await fetch("http://localhost:8000/chat", {
-#   method: "POST",
-#   headers: { "Content-Type": "application/json" },
-#   body: JSON.stringify({ query: "이번 주말 축제 알려줘" }),
-# });
-# const data = await res.json();
-# console.log(data.answer);

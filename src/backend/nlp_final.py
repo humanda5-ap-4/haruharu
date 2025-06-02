@@ -23,8 +23,6 @@ import ollama
 from transformers import pipeline
 
 
-from typing import List # Stock json
-from common.entity import TransformerEntityMatcher, StockEntityMatcher, Entity # stcok json 
 # 경로 설정
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
@@ -51,7 +49,7 @@ class TransformerEntityMatcher:
         return [Entity(type=e["entity_group"], value=e["word"], start=e["start"], end=e["end"]) for e in self._pipe(text)]
 
 class NLUEngine:
-    _vec = _clf = _matcher = _stock_matcher = None
+    _vec = _clf = _matcher = None
 
     @classmethod
     def ensure_loaded(cls):
@@ -59,7 +57,6 @@ class NLUEngine:
             cls._vec = joblib.load(NLU_DIR / "intent_encoder.joblib")
             cls._clf = joblib.load(NLU_DIR / "intent_clf.joblib")
             cls._matcher = TransformerEntityMatcher()
-            cls._stock_matcher = StockEntityMatcher(NLU_DIR / "stock_code_mapping.json")             # json for stock
 
     @classmethod
     def classify_intent(cls, text: str) -> str:
@@ -70,10 +67,8 @@ class NLUEngine:
     @classmethod
     def extract_entities(cls, text: str) -> List[Entity]:
         cls.ensure_loaded()
-        entities = cls._matcher.extract(text) # json
-        stock_entities = cls._stock_matcher.extract(text) # json
-        #return cls._matcher.extract(text)
-        return entities + stock_entities # json 
+        return cls._matcher.extract(text)
+
     @classmethod
     def answer(cls, query: str) -> str:
         intent = cls.classify_intent(query)

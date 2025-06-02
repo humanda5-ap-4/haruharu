@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from typing import List
 from transformers import pipeline
 import json
+import pandas as pd
+
 
 @dataclass
 class Entity:
@@ -22,18 +24,10 @@ class TransformerEntityMatcher:
         ]
 
 
-
-
 class StockEntityMatcher:
-    def __init__(self, json_path):
-        with open(json_path, "r", encoding="utf-8") as f:
-            self.stock_names = list(json.load(f).keys())
+    def __init__(self, csv_path=r"C:\Users\human\haruharu1\src\backend\intents\kospi_kosdaq_stocks.csv"):
+        df = pd.read_csv(csv_path)
+        self.stock_names = df["Stock Name"].tolist()  
 
-    def extract(self, text: str) -> List[Entity]:
-        entities = []
-        for name in self.stock_names:
-            if name in text:
-                start = text.index(name)
-                end = start + len(name)
-                entities.append(Entity(type="종목명", value=name, start=start, end=end))
-        return entities
+    def extract(self, text: str):
+        return [{"type": "종목명", "value": name} for name in self.stock_names if name in text]
