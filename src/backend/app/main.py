@@ -3,6 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import chat
 
+import sys
+sys.path.append("D:/code_yoon/adv_proj_haru/src")
+
 from dotenv import load_dotenv
 load_dotenv() 
 

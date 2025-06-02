@@ -1,0 +1,7 @@
+NER 학습용 데이터셋(BIO tagging 형식)
+{
+  "text": "삼성전자 주식정보",
+  "labels": [
+    [0, 4, "ORG"]
+  ]
+}

@@ -95,6 +95,16 @@ class NLUEngine:
                     return f"{list_text}\n\n[BOT 추천 (상위 5개 요약)]\n{summary}"
                 except Exception as e:
                     return f"[ERROR] SQL 실행 실패: {e}"
+        
+        elif intent in {"주식", "stock"}:
+            pass
+
+        elif intent in {"리니지", "l2m"}:
+            pass
+
+        elif intent in {"steam", "스팀게임"}:
+            pass
+
         return generate_response(f"한국어 챗봇입니다. 다음 요청에 답하세요: {query}")
 
 def generate_response(prompt: str) -> str:
