@@ -27,6 +27,7 @@ const ChatBotPage: React.FC = () => {
     steam: '/fruit2.png',
     lineage: '/fruit3.png',
     stock: '/fruit4.png',
+    common: '/logo_max.png',
   };
   
   const initialMessage = new URLSearchParams(location.search).get('msg');
