@@ -7,7 +7,8 @@ from backend.common.response import generate_response
 
 
 PROMPT_TEMPLATE = """
-📈 {company} ({code}) 관련 요약
+다음은 {company} ({code})에 대한 주가 정보입니다: 아래 숫자는 모두 1주 기준 원 단위입니다.
+현재가는 무조건 1주 단위입니다. 주식 1개의 거래량만 알려주세요
 
 💰 현재가: {price}원
 📉 전일 대비: {diff}원
@@ -46,8 +47,23 @@ def handle(query: str, entities: list) -> str:
     if not info:
         return f"[BOT] '{company}'의 주식 데이터를 조회할 수 없습니다."
 
+        # 4️⃣ 값 추출
     price = info.get("stck_prpr", "정보 없음")
+    diff = info.get("prdy_vrss", "정보 없음")
+    rate = info.get("prdy_ctrt", "정보 없음")
 
-    # 4️⃣ 요약 프롬프트 작성
-    prompt = PROMPT_TEMPLATE.format(company=company, price=price)
+    # print(f"\n📈 {company} ({code})")
+    # print(f"💰 현재가: {price}원")
+    # print(f"📉 전일 대비: {diff}원")
+    # print(f"📊 등락률: {rate}%\n")
+
+    # 5️⃣ 요약 프롬프트 작성 (전체 값 전달)
+    prompt = PROMPT_TEMPLATE.format(
+        company=company,
+        code=code,
+        price=price,
+        diff=diff,
+        rate=rate
+    )
+
     return generate_response(prompt.strip())
