@@ -15,6 +15,7 @@ class NLUEngine:
             cls._vec = joblib.load(NLU_DIR / "intent_encoder.joblib")
             cls._clf = joblib.load(NLU_DIR / "intent_clf.joblib")
             cls._matcher = TransformerEntityMatcher()
+            cls._stock_matcher = StockEntityMatcher(NLU_DIR / "stock_code_mapping.json") # stock json
 
     @classmethod
     def classify_intent(cls, text: str) -> str:
@@ -25,4 +26,9 @@ class NLUEngine:
     @classmethod
     def extract_entities(cls, text: str):
         cls.ensure_loaded()
-        return cls._matcher.extract(text)
+
+        entities = cls._transformer_matcher.extract(text)
+        stock_entities = cls._stock_matcher.extract(text)
+
+        #return cls._matcher.extract(text)
+        return entities + stock_entities

@@ -5,6 +5,15 @@ from app.routes import chat
 
 app = FastAPI()
 
+import os   #.env 
+from dotenv import load_dotenv #.env
+
+load_dotenv()
+
+appkey = os.getenv("APP_KEY")
+appsecret = os.getenv("APP_SECRET")
+
+
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",

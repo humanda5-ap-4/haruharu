@@ -211,7 +211,7 @@ venv/
 .ipynb_checkpoints/
 
 # 데이터 파일 (원시 데이터는 보통 제외)
-*.csv
+#*.csv
 *.tsv
 *.xls
 *.xlsx

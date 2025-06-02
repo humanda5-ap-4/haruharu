@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import List
 from transformers import pipeline
+import json
 
 @dataclass
 class Entity:
@@ -19,3 +20,20 @@ class TransformerEntityMatcher:
             Entity(type=e["entity_group"], value=e["word"], start=e["start"], end=e["end"])
             for e in self._pipe(text)
         ]
+
+
+
+
+class StockEntityMatcher:
+    def __init__(self, json_path):
+        with open(json_path, "r", encoding="utf-8") as f:
+            self.stock_names = list(json.load(f).keys())
+
+    def extract(self, text: str) -> List[Entity]:
+        entities = []
+        for name in self.stock_names:
+            if name in text:
+                start = text.index(name)
+                end = start + len(name)
+                entities.append(Entity(type="종목명", value=name, start=start, end=end))
+        return entities
