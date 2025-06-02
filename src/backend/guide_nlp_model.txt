@@ -5,6 +5,7 @@
 5. ollama --version 확인
 6. ollama pull gemma:2b
 
+6. python 루트경로는 ap
 7. python src/backend/CLI_test.py --preprocess
 8. python src/backend/CLI_test.py --train 
 9. python src/backend/CLI_test.py --ner_train      
