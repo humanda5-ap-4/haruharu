@@ -1,0 +1,3 @@
+cd "Project root folder"
+set PYTHONPATH=./src
+python src/backend/CLI_test.py --preprocess

@@ -240,14 +240,18 @@ venv/
 .vscode/
 .idea/
 
-# 모델 및 결과 저장
+# 모델 및 결과 저장 
 models/
 checkpoints/
 outputs/
 ner_model/
 ner_model_kykim/
 
-
+# 개인파일
+.stock.py
+src/backend/.stock.py
+stock (1).py
+src/backend/stock (1).py
 # data 폴더에 있는 shared.xlsx는 예외 처리 (Git에 포함)
 !docs/team/team.xlsx
 !docs/notes/*.xlsx
@@ -260,6 +264,7 @@ ner_model_kykim/
 !src/backend/nlp/training/dataset/*.json
 !src/backend/data/*.json
 *.xlsx merge=ours
+!src/backend/intents/stock_codes.json
 
 #임시파일 제거
 ~$*

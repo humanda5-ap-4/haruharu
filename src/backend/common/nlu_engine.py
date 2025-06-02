@@ -1,22 +1,23 @@
-#Intent 분류 및 Entity 추출
+# Intent 분류 및 Entity 추출
 import joblib
 from sentence_transformers import SentenceTransformer
-from common.entity import TransformerEntityMatcher,StockEntityMatcher
+from common.entity import TransformerEntityMatcher
 from pathlib import Path
 
 NLU_DIR = Path(__file__).resolve().parents[1] / "nlu"
 
 class NLUEngine:
-    _vec = _clf = _matcher = None
+    _vec = None
+    _clf = None
+    _matcher = None
 
     @classmethod
     def ensure_loaded(cls):
-        if cls._vec is None:
+        if cls._vec is None or cls._clf is None:
             cls._vec = joblib.load(NLU_DIR / "intent_encoder.joblib")
             cls._clf = joblib.load(NLU_DIR / "intent_clf.joblib")
-            cls._matcher = TransformerEntityMatcher()
-            cls._stock_matcher = StockEntityMatcher(r"C:\Users\human\haruharu1\src\backend\intents\kospi_kosdaq_stocks.csv")
-
+        if cls._matcher is None:
+            cls._matcher = TransformerEntityMatcher()  # fine-tuned + huggingface 조합 NER 사용
 
     @classmethod
     def classify_intent(cls, text: str) -> str:
@@ -27,6 +28,4 @@ class NLUEngine:
     @classmethod
     def extract_entities(cls, text: str):
         cls.ensure_loaded()
-        ner_entities = cls._matcher.extract(text)
-        stock_entities = cls._stock_matcher.extract(text)
-        return ner_entities + stock_entities
+        return cls._matcher.extract(text)
