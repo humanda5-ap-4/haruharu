@@ -4,11 +4,6 @@ from common.train_util import preprocess_data, train_intent_model
 from intents import INTENT_HANDLER  # 여기에 각 intent 핸들러 등록되어 있어야 함
 from intents import common  # fallback 핸들러
 
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--preprocess", action="store_true")
@@ -32,8 +27,6 @@ def main():
         engine = NLUEngine()
         print("[INTENT]", engine.classify_intent(args.test))
         print("[ENTITY]", [f"{e.type}:{e.value}" for e in engine.extract_entities(args.test)])
-        entities = engine.extract_entities("세동 주가 알려줘")
-        print("✅ 엔티티 디버깅:", [(e.start, e.end, e.type, e.value) for e in entities])
 
     elif args.ask:
         engine = NLUEngine()

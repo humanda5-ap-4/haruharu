@@ -5,7 +5,7 @@ from backend.intents.stock_api import get_access_token, get_stock_info
 from backend.common.response import generate_response
 
 
-
+#prompt 디버깅 모드#
 PROMPT_TEMPLATE = """
 다음은 {company} ({code})에 대한 주가 정보입니다: 아래 숫자는 모두 1주 기준 원 단위입니다.
 현재가는 무조건 1주 단위입니다. 주식 1개의 거래량만 알려주세요
@@ -19,9 +19,27 @@ PROMPT_TEMPLATE = """
 
 # 🎯 메인 핸들러
 def handle(query: str, entities: list) -> str:
-    # 1️⃣ ORG 또는 STOCK 타입에서 기업명 추출
-    company = next((e.value for e in entities if e.type in {"ORG", "STOCK"}), None)
+    def merge_wordpieces(entities):
+        merged = []
+        buffer = ""
 
+        for e in entities:
+            if e.type in {"ORG", "STOCK"}:
+                if e.value.startswith("##"):
+                    buffer += e.value[2:]
+                else:
+                    if buffer:
+                        merged.append(buffer)
+                    buffer = e.value
+        if buffer:
+            merged.append(buffer)
+        return merged
+    
+    # 1️⃣ ORG 또는 STOCK 타입에서 기업명 추출
+    #company = next((e.value for e in entities if e.type in {"ORG", "STOCK"}), None)
+    merged_entities = merge_wordpieces(entities)
+    company = merged_entities[0] if merged_entities else None
+    
     if company:
         for suffix in [" 주식정보", " 정보", " 관련"]:
             if company.endswith(suffix):
@@ -65,4 +83,5 @@ def handle(query: str, entities: list) -> str:
         diff=diff,
         rate=rate
     )
+
     return generate_response(prompt.strip())

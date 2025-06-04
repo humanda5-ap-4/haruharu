@@ -1,4 +1,4 @@
-from . import festival, steam, l2m, common, stock 
+from . import festival, steam,common, stock , l2m
 
 INTENT_HANDLER = {
     "festival_query": festival.handle,
