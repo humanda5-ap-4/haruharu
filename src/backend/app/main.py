@@ -1,7 +1,9 @@
 # backend/app/main.py
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.routes import chat
+
 from dotenv import load_dotenv
 import os
 

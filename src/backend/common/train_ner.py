@@ -91,7 +91,7 @@ def train():
     # 학습 인자
     training_args = TrainingArguments(
         output_dir=str(OUTPUT_DIR),
-        evaluation_strategy="epoch",
+        #evaluation_strategy="epoch",
         save_strategy="epoch",
         learning_rate=2e-5,
         per_device_train_batch_size=8,

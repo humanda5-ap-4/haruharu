@@ -1,5 +1,24 @@
 [
   {
+    "text": "삼성전자 외국인 투자 동향 알려줘",
+    "labels": [
+      [0, 4, "ORG"],
+      [5, 8, "INVESTOR_TYPE"]
+    ]
+  },
+  {
+    "text": "기관 매수 현황 보여줘",
+    "labels": [
+      [0, 2, "INVESTOR_TYPE"]
+    ]
+  },
+  {
+    "text": "외국인 투자자 매매량이 궁금해",
+    "labels": [
+      [0, 3, "INVESTOR_TYPE"]
+    ]
+  },
+  {
     "text": "삼성전자 주가 변동이 궁금해",
     "labels": [[0, 4, "ORG"]]
   },

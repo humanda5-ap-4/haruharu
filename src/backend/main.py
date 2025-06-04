@@ -16,7 +16,6 @@ import torch
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import AutoTokenizer, AutoModelForCausalLM
-import engine
 # FastAPI 초기화
 app = FastAPI()
 import uvicorn

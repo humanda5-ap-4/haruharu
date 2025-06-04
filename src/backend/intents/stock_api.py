@@ -3,7 +3,7 @@ import requests
 import time
 import json
 from dotenv import load_dotenv
-#from backend.intents.stock_utils import get_stock_code_by_name, get_name_by_stock_code
+from backend.intents.stock_utils import get_stock_code_by_name, get_name_by_stock_code
 
 # ⏰ 여유 시간 (5분) & 유효기간 (24시간)
 TOKEN_EXPIRE_BUFFER = 300
@@ -83,38 +83,81 @@ def get_stock_info(stock_code: str, access_token: str) -> dict:
     return res.json().get("output", {})
 
 
-# 🧪 실행 테스트
-if __name__ == "__main__":
-    # 회사명으로 종목 조회 (ex: 챗봇 입력값)
-    input_name = "삼성전자"  # <- 여기 입력만 바꾸면 됨
-    stock_code = get_stock_code_by_name(input_name)
 
-    if not stock_code:
-        print(f"❌ '{input_name}' 에 해당하는 종목코드가 없습니다.")
-        exit()
+def get_investor_trends(stock_code: str, access_token: str) -> dict:
+    """
+    한투 API의 투자자별 매매동향 데이터를 조회합니다.
+    반환 예시: {"foreign": 45.3, "institutional": 30.2, "individual": 24.5}
+    실패 시 빈 dict 반환
+    """
 
-    token = get_access_token()
-    if not token:
-        print("❌ 유효한 토큰이 없어 조회 불가")
-        exit()
+    url = "https://openapi.koreainvestment.com:9443/uapi/domestic-stock/v1/quotations/inquire-investor"
+    headers = {
+        "authorization": f"Bearer {access_token}",
+        "appkey": APPKEY,
+        "appsecret": APPSECRET,
+        "tr_id": "FHKST01010400"  # 한투 투자자 매매동향 TR ID (예시)
+    }
+    params = {
+        "fid_cond_mrkt_div_code": "J",  # 국내 주식 시장
+        "fid_input_iscd": stock_code
+    }
 
-    stock_data = get_stock_info(stock_code, token)
-    if not stock_data:
-        print("❌ 주식 데이터를 불러오지 못했습니다.")
-        exit()
+    res = requests.get(url, headers=headers, params=params)
+    if res.status_code != 200:
+        print(f"❌ 투자자 매매동향 조회 실패 ({stock_code})")
+        print(res.text)
+        return {}
 
-    # 종목코드를 회사명으로 매핑 (API 실패 시에도 대비)
-    display_name = (
-        stock_data.get("hts_kor_isnm")
-        or get_name_by_stock_code(stock_code)
-        or f"종목코드: {stock_code}"
-    )
+    data = res.json().get("output", {})
 
-    price = stock_data.get("stck_prpr", "N/A")
-    change = stock_data.get("prdy_vrss", "0")
-    rate = stock_data.get("prdy_ctrt", "0")
+    # 데이터 구조에 따라 key 조정 필요 (예시는 한투 문서 참고)
+    try:
+        trends = {
+            "foreign": float(data.get("invst_foreign_ratio", 0)),       # 외국인 보유 비율(또는 매매 비율)
+            "institutional": float(data.get("invst_institution_ratio", 0)), # 기관 비율
+            "individual": float(data.get("invst_individual_ratio", 0))   # 개인 비율
+        }
+        return trends
+    except Exception as e:
+        print("❌ 투자자 매매동향 데이터 파싱 실패:", e)
+        return {}
+    
 
-    print(f"📈 {display_name} ({stock_code})")
-    print(f"💰 현재가: {price}원")
-    print(f"📉 전일 대비: {change}원")
-    print(f"📊 등락률: {rate}%")
+    
+
+# # 🧪 실행 테스트
+# if __name__ == "__main__":
+#     # 회사명으로 종목 조회 (ex: 챗봇 입력값)
+#     input_name = "삼성전자"  # <- 여기 입력만 바꾸면 됨
+#     stock_code = get_stock_code_by_name(input_name)
+
+#     if not stock_code:
+#         print(f"❌ '{input_name}' 에 해당하는 종목코드가 없습니다.")
+#         exit()
+
+#     token = get_access_token()
+#     if not token:
+#         print("❌ 유효한 토큰이 없어 조회 불가")
+#         exit()
+
+#     stock_data = get_stock_info(stock_code, token)
+#     if not stock_data:
+#         print("❌ 주식 데이터를 불러오지 못했습니다.")
+#         exit()
+
+#     # 종목코드를 회사명으로 매핑 (API 실패 시에도 대비)
+#     display_name = (
+#         stock_data.get("hts_kor_isnm")
+#         or get_name_by_stock_code(stock_code)
+#         or f"종목코드: {stock_code}"
+#     )
+
+#     price = stock_data.get("stck_prpr", "N/A")
+#     change = stock_data.get("prdy_vrss", "0")
+#     rate = stock_data.get("prdy_ctrt", "0")
+
+#     print(f"📈 {display_name} ({stock_code})")
+#     print(f"💰 현재가: {price}원")
+#     print(f"📉 전일 대비: {change}원")
+#     print(f"📊 등락률: {rate}%")

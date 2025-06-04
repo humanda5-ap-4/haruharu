@@ -33,9 +33,8 @@ RECOMMEND_PROMPT_TEMPLATE = """
 
 위 게임들을 2~3문장으로 요약해 사용자에게 자연스럽게 추천해 주세요.
 """
-
 # 🎯 메인 핸들러
-def handle(query: str, entities: list) -> str:
+def handle_steam_intent(query: str, entities: list) -> str:
     #return "[BOT] steam intent 응답 테스트"
     sql = generate_sql(query)
 
@@ -61,6 +60,10 @@ def handle(query: str, entities: list) -> str:
 
 # 🔧 LLM 기반 SQL 생성 함수
 def generate_sql(query: str) -> str:
+
+    is_free = "무료" in query or "0원" in query # 무료  또한 0 원으로 포함
+ 
+
     prompt = SQL_PROMPT_TEMPLATE.format(query=query)
     sql = generate_response(prompt).strip()
     sql = re.sub(r"```sql|```", "", sql).strip().strip(";")
