@@ -6,7 +6,6 @@ from DB.services import intent_map, generate_answer,handle_stock,handle_game,han
 
 from DB.db import get_db
 
-
 from fastapi import FastAPI, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import joblib
@@ -144,13 +143,13 @@ async def chat(
     if not msg.strip():
         return {"error": "메시지가 비어 있습니다."}
 
-    engine.load_models()
+    load_models()
 
-    txt = engine.normalize(msg)
-    raw_intent = engine.clf.predict(engine.vec.transform([txt]))[0]
-    intent = intent_map.get(raw_intent, raw_intent)  # 의도 매핑
+    txt = normalize(msg)
+    raw_intent = clf.predict(vec.transform([txt]))[0]
+    intent = intent_map.get(raw_intent, raw_intent)
 
-    ents = engine.matcher.extract(txt)
+    ents = extract_entities(txt)
     print(f"사용자 입력: {msg}")
     print(f"정규화된 입력: {txt}")
     print(f"의도 분류 결과: {intent}")
@@ -165,6 +164,7 @@ async def chat(
         "entities": ents,
         "answer": answer
     }
+
 
 
 

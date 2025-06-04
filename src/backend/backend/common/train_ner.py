@@ -16,7 +16,7 @@ def train():
     NER_PATH = DATA_DIR / "ner_dataset.json"
     OUTPUT_DIR = NLU_DIR / "ner_model"
 
-    MODEL_NAME = "dslim/bert-base-NER"
+    MODEL_NAME = "bert-base-multilingual-cased"
 
     # ✅ 데이터 로드
     with open(NER_PATH, "r", encoding="utf-8") as f:
@@ -74,18 +74,19 @@ def train():
     )
 
     training_args = TrainingArguments(
-        output_dir=str(OUTPUT_DIR),
-        #evaluation_strategy="epoch",
-        save_strategy="epoch",
-        learning_rate=2e-5,
-        per_device_train_batch_size=8,
-        per_device_eval_batch_size=8,
-        num_train_epochs=3,
-        weight_decay=0.01,
-        save_total_limit=2,
-        logging_dir=str(LOG_DIR),
-        logging_steps=10,
-        lr_scheduler_type="constant"
+    output_dir=str(OUTPUT_DIR),
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+    learning_rate=2e-5,
+    per_device_train_batch_size=2,
+    per_device_eval_batch_size=2,
+    num_train_epochs=3,
+    weight_decay=0.01,
+    save_total_limit=2,
+    logging_dir=str(LOG_DIR),
+    logging_steps=100,
+    lr_scheduler_type="constant",
+    dataloader_num_workers=2  # ✅ CPU 병렬 처리용
     )
 
     def compute_metrics(p):

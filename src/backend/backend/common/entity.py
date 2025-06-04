@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import List
 from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification
 import pathlib
-from typing import List, Dict
 
 @dataclass
 class Entity:
@@ -60,7 +59,3 @@ class TransformerEntityMatcher:
                     end=e["end"]
                 ))
         return entities
-    def extract_for_intent(self, text: str) -> List[Dict[str, str]]:
-        entities = self.extract(text)
-        # handle_stock_intent가 기대하는 dict 리스트 형태로 변환
-        return [{"type": e.type, "value": e.value} for e in entities]

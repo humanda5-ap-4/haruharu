@@ -3,10 +3,10 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from common.nlu_engine import NLUEngine
 
-from intents.stock import handle_stock_intent
+from intents.stock import handle as handle_stock_intent
 from intents.festival import handle as handle_festival
-from intents.steam import handle as handle_steam
-from intents.l2m import handle_lineage2_intent
+from intents.steam import handle as handle_steam_intent
+from intents.l2m import handle as handle_lineage2_intent
 from intents.common import handle as handle_common
 
 
@@ -18,7 +18,8 @@ INTENT_HANDLER = {
     "common": handle_common,        # added  17 ~ 22 
     "stock": handle_stock_intent, #
     "lineage2": handle_lineage2_intent,
-    "steam": handle_steam,           # 
+    "l2m": handle_lineage2_intent,
+    "steam": handle_steam_intent,           # 
     "festival": handle_festival
     }
 class ChatRequest(BaseModel):
