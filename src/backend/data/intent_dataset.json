@@ -2,7 +2,10 @@
   { "text": "서울에서 열리는 축제 알려줘", "intent": "festival" },
   { "text": "이번 주말에 갈 수 있는 축제 있을까?", "intent": "festival" },
   { "text": "가장 가까운 축제 위치 알려줘", "intent": "festival" },
-  { "text": "지금 내 위치 기준으로 10km 이내 축제 있어?", "intent": "festival" },
+  {
+    "text": "지금 내 위치 기준으로 10km 이내 축제 있어?",
+    "intent": "festival"
+  },
   { "text": "보령 머드축제 어디서 열려?", "intent": "festival" },
   { "text": "진주 유등축제 장소가 어디야?", "intent": "festival" },
   { "text": "해운대 불꽃축제는 언제 시작해?", "intent": "festival" },
@@ -19,7 +22,10 @@
   { "text": "현재 위치 기준 거리순 축제 알려줘", "intent": "festival" },
   { "text": "광화문에서 가까운 축제 있어?", "intent": "festival" },
   { "text": "서울특별시 종로구 인근 축제 정보 줘", "intent": "festival" },
-  { "text": "서울시에서 열리는 축제의 도로명 주소 알려줘", "intent": "festival" },
+  {
+    "text": "서울시에서 열리는 축제의 도로명 주소 알려줘",
+    "intent": "festival"
+  },
   { "text": "이번 주에 시작하는 축제 뭐 있어?", "intent": "festival" },
   { "text": "다음 주에 끝나는 축제 추천해줘", "intent": "festival" },
   { "text": "위도 경도로 축제 위치 검색 가능해?", "intent": "festival" },
@@ -37,10 +43,47 @@
   { "text": "서울 종로구에서 열리는 축제 정보 줘", "intent": "festival" },
   { "text": "다음 주말에 가까운 지역 축제 추천해줘", "intent": "festival" },
   { "text": "도로명 주소로 정렬된 축제 목록 보여줘", "intent": "festival" },
-  { "text": "위도 경도 좌표 기준으로 축제 보여줄 수 있어?", "intent": "festival" },
+  {
+    "text": "위도 경도 좌표 기준으로 축제 보여줄 수 있어?",
+    "intent": "festival"
+  },
+  { "text": "바츠01 서버에서 사룽가 시세 알려줘", "intent": "l2m" },
+  {
+    "text": "지그하르트02 서버의 핸드 오브 카브리오 가격이 궁금해",
+    "intent": "l2m"
+  },
+  { "text": "카인03서버 전설 장검 최저가 좀 볼 수 있어?", "intent": "l2m" },
+  { "text": "리오나04서버 크로니클 검 평균 단가 알려줘", "intent": "l2m" },
+  {
+    "text": "에리카05서버에 등록된 영웅 활 가격이 얼마나 돼?",
+    "intent": "l2m"
+  },
+  { "text": "거스틴06 서버에서 사룽가 시세가 어떻게 돼?", "intent": "l2m" },
+  { "text": "카스티엔07 서버의 전설 장검 최저 가격 보여줘", "intent": "l2m" },
+  {
+    "text": "아리아08서버 핸드 오브 카브리오 오늘 시세 좀 알려줘",
+    "intent": "l2m"
+  },
+  { "text": "드비안느09서버 크로니클 검 시세 확인해줘", "intent": "l2m" },
+  { "text": "테온10 서버에서 영웅 활 얼마야?", "intent": "l2m" },
   { "text": "종로구 인근에서 오늘 열리는 축제 알려줘", "intent": "festival" },
-  
+  { "text": "바츠01서버 사룽가 시세좀 알려줘", "intent": "l2m" },
   { "text": "신화급 장비 시세 알려줘", "intent": "l2m" },
+  { "text": "리니지 경매장에 등록된 아이템 뭐 있어?", "intent": "l2m" },
+  { "text": "데포로쥬 서버의 핸드 오브 카브리오 시세 알려줘", "intent": "l2m" },
+  { "text": "카브리오 무기 가격 얼마나 해?", "intent": "l2m" },
+  { "text": "오늘 리니지2M 경매장 인기 아이템 알려줘", "intent": "l2m" },
+  { "text": "7강 전설 갑옷 최저가 좀 보여줘", "intent": "l2m" },
+  { "text": "서버별 5강 무기 가격 차이 정리해줘", "intent": "l2m" },
+  { "text": "엘모어10 서버에서 마법사의 반지 얼마야?", "intent": "l2m" },
+  { "text": "6강 영웅 활 시세 확인하고 싶어", "intent": "l2m" },
+  { "text": "지금 핫한 아이템 평균 시세 알려줄래?", "intent": "l2m" },
+  { "text": "리니지2m 아이템 가격 비교해줘", "intent": "l2m" },
+  { "text": "인기 장비들의 서버별 가격 궁금해", "intent": "l2m" },
+  { "text": "강화 수치별로 아이템 가격 정리해줘", "intent": "l2m" },
+  { "text": "서버 이름 말할게, 거기서 아이템 가격 보여줘", "intent": "l2m" },
+  { "text": "드비안느 서버에 핸드 오브 카브리오 있어?", "intent": "l2m" },
+  { "text": "아이템명 말하면 시세 바로 나와?", "intent": "l2m" },
   { "text": "엘모어 서버에서 각인 장검 최저가가 얼마야?", "intent": "l2m" },
   { "text": "말하는 섬 서버에서 크로니클 세트 얼마야?", "intent": "l2m" },
   { "text": "현재 최저가로 구할 수 있는 전설 무기 뭐 있어?", "intent": "l2m" },

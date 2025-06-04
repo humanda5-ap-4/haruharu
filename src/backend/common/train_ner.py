@@ -16,66 +16,51 @@ def train():
     NER_PATH = DATA_DIR / "ner_dataset.json"
     OUTPUT_DIR = NLU_DIR / "ner_model"
 
-    # 모델 이름
-    MODEL_NAME = "dslim/bert-base-NER"
+    MODEL_NAME = "bert-base-multilingual-cased"
 
     # ✅ 데이터 로드
     with open(NER_PATH, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
 
-    # BIO 태그 적용된 라벨 리스트 생성
-    base_labels = {label for item in raw_data for _, _, label in item["labels"]}
-    bio_labels = set()
-    for label in base_labels:
-        bio_labels.add(f"B-{label}")
-        bio_labels.add(f"I-{label}")
-    bio_labels.add("O")
-
-    label_list = sorted(bio_labels)
+    # BIO 태그 리스트 추출
+    base_labels = {label for item in raw_data for label in item["ner_tags"]}
+    label_list = sorted(base_labels)
     label_to_id = {label: i for i, label in enumerate(label_list)}
     id_to_label = {i: label for label, i in label_to_id.items()}
 
-    # 토크나이저
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
-    # 토크나이징 + BIO 라벨 정렬
+    # label_all_tokens 플래그 (subword에도 라벨 적용 여부)
+    label_all_tokens = True
+
     def tokenize_and_align_labels(example):
         tokenized_inputs = tokenizer(
-            example["text"],
+            example["tokens"],
+            is_split_into_words=True,
             truncation=True,
             padding="max_length",
             max_length=128,
-            return_offsets_mapping=True
+            return_offsets_mapping=False
         )
 
-        labels = ["O"] * len(tokenized_inputs["input_ids"])
-        offsets = tokenized_inputs["offset_mapping"]
-        entities = json.loads(example["entities"])
+        word_ids = tokenized_inputs.word_ids()
+        aligned_labels = []
+        previous_word_idx = None
 
-        for start, end, label in entities:
-            for idx, (offset_start, offset_end) in enumerate(offsets):
-                if offset_start == offset_end == 0:
-                    continue
-                if offset_start >= start and offset_end <= end:
-                    if labels[idx] == "O":
-                        labels[idx] = f"B-{label}"
-                    elif labels[idx].startswith("B-"):
-                        labels[idx] = f"I-{label}"
-                    elif labels[idx].startswith("I-"):
-                        continue
+        for word_idx in word_ids:
+            if word_idx is None:
+                aligned_labels.append(-100)
+            elif word_idx != previous_word_idx:
+                aligned_labels.append(label_to_id.get(example["ner_tags"][word_idx], -100))
+            else:
+                aligned_labels.append(label_to_id.get(example["ner_tags"][word_idx], -100) if label_all_tokens else -100)
+            previous_word_idx = word_idx
 
-        # BIO 태그를 ID로 변환
-        label_ids = [label_to_id.get(l, -100) for l in labels]
-
-        tokenized_inputs["labels"] = label_ids
-        tokenized_inputs.pop("offset_mapping")
+        tokenized_inputs["labels"] = aligned_labels
         return tokenized_inputs
 
     # HuggingFace Dataset 생성
-    dataset = Dataset.from_list([
-        {"text": item["text"], "entities": json.dumps(item["labels"])} for item in raw_data
-    ])
-
+    dataset = Dataset.from_list(raw_data)
     dataset = dataset.map(tokenize_and_align_labels)
     split = dataset.train_test_split(test_size=0.2)
 
@@ -88,23 +73,22 @@ def train():
         ignore_mismatched_sizes=True
     )
 
-    # 학습 인자
     training_args = TrainingArguments(
-        output_dir=str(OUTPUT_DIR),
-        evaluation_strategy="epoch",
-        save_strategy="epoch",
-        learning_rate=2e-5,
-        per_device_train_batch_size=8,
-        per_device_eval_batch_size=8,
-        num_train_epochs=3,
-        weight_decay=0.01,
-        save_total_limit=2,
-        logging_dir=str(LOG_DIR),
-        logging_steps=10,
-        lr_scheduler_type="constant"
+    output_dir=str(OUTPUT_DIR),
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+    learning_rate=2e-5,
+    per_device_train_batch_size=2,
+    per_device_eval_batch_size=2,
+    num_train_epochs=3,
+    weight_decay=0.01,
+    save_total_limit=2,
+    logging_dir=str(LOG_DIR),
+    logging_steps=100,
+    lr_scheduler_type="constant",
+    dataloader_num_workers=2  # ✅ CPU 병렬 처리용
     )
 
-    # 평가 메트릭
     def compute_metrics(p):
         predictions, labels = p
         predictions = predictions.argmax(-1)
@@ -129,7 +113,6 @@ def train():
             "f1": f1_score(true_labels, true_predictions),
         }
 
-    # 학습 시작
     trainer = Trainer(
         model=model,
         args=training_args,

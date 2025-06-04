@@ -27,14 +27,18 @@ def main():
         engine = NLUEngine()
         print("[INTENT]", engine.classify_intent(args.test))
         print("[ENTITY]", [f"{e.type}:{e.value}" for e in engine.extract_entities(args.test)])
-        entities = engine.extract_entities("세동 주가 알려줘")
-        print("✅ 엔티티 디버깅:", [(e.start, e.end, e.type, e.value) for e in entities])
 
     elif args.ask:
         engine = NLUEngine()
         intent = engine.classify_intent(args.ask)
         entities = engine.extract_entities(args.ask)
         handler = INTENT_HANDLER.get(intent, common.handle)
+
+        if handler == common.handle:
+            print(f"[WARN] 핸들러 fallback됨: intent='{intent}' → common.handle 사용")
+        else:
+            print(f"[DEBUG] 핸들러 찾음: intent='{intent}' → {handler.__module__}.{handler.__name__}")
+        
         response = handler(args.ask, entities)
         print("[BOT]", response)
 

@@ -35,10 +35,12 @@ class TransformerEntityMatcher:
         )
 
     def extract(self, text: str) -> List[Entity]:
-        # 두 모델 결과 병합
-        stock_keywords = {"주가", "주식", "PER", "PBR", "상장"}
+        # 주제별 키워드 기반 모델 선택
+        stock_keywords = {"주가", "주식", "PER", "PBR", "상장", "코스피", "코스닥"}
+        l2m_keywords = {"서버", "시세", "강화", "장비", "무기", "방어구", "세트", "아이템", "전설", "영웅", "희귀"}
 
-        if any(keyword in text for keyword in stock_keywords):
+        # 어떤 모델을 쓸지 결정
+        if any(kw in text for kw in stock_keywords.union(l2m_keywords)):
             results = self.custom_pipe(text)
         else:
             results = self.generic_pipe(text)
