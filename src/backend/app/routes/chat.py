@@ -2,7 +2,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from common.nlu_engine import NLUEngine
-from intents import INTENT_HANDLER  # 기타 스팀, 주식, 리니지2 등도 import
 from intents import common # 예외처리
 
 router = APIRouter()

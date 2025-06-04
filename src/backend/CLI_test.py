@@ -1,8 +1,8 @@
 import argparse
 from common.nlu_engine import NLUEngine
 from common.train_util import preprocess_data, train_intent_model
-from intents import INTENT_HANDLER  # 여기에 각 intent 핸들러 등록되어 있어야 함
-from intents import common  # fallback 핸들러
+#from intents import INTENT_HANDLER  # 여기에 각 intent 핸들러 등록되어 있어야 함
+#from intents import common  # fallback 핸들러
 
 def main():
     parser = argparse.ArgumentParser()
