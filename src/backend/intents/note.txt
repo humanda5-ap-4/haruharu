@@ -1,0 +1,3 @@
+20250604
+l2m: item list 받아오기
+l2m chatbot 마무리

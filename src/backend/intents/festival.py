@@ -4,7 +4,7 @@ from sqlalchemy import text
 from common.response import generate_response
 from db import engine_db
 
-# 🧠 프롬프트 템플릿 (LLM용)
+# 🧠 프롬프트 템플릿 (LLM용) # 프롬포트 로거
 SQL_PROMPT_TEMPLATE = """
 [규칙 기반 SQL 생성기]
 

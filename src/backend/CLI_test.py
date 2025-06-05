@@ -27,8 +27,6 @@ def main():
         engine = NLUEngine()
         print("[INTENT]", engine.classify_intent(args.test))
         print("[ENTITY]", [f"{e.type}:{e.value}" for e in engine.extract_entities(args.test)])
-        entities = engine.extract_entities("세동 주가 알려줘")
-        print("✅ 엔티티 디버깅:", [(e.start, e.end, e.type, e.value) for e in entities])
 
     elif args.ask:
         engine = NLUEngine()

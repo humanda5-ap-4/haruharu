@@ -11,3 +11,9 @@ sentence-transformers
 transformers
 torch
 requests
+selenium
+beautifulsoup4
+fastapi
+uvicorn
+pandas
+numpy
