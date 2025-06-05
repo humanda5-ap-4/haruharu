@@ -29,6 +29,16 @@ PROMPT_TEMPLATE_FOREIGN = """
 """
 
 
+# 외국인 ,기관 
+PROMPT_TEMPLATE_FOREIGN = """
+다음은 {company} ({code})의 투자자 보유 관련 정보입니다:
+
+외국인 보유율: {foreign_rate}%
+기관 보유율: {institution_rate}%
+현재가: {price}원
+
+외국인과 기관의 최근 투자 흐름을 요약해서 알려줘.
+"""
 
 
 def refresh_token_message():
