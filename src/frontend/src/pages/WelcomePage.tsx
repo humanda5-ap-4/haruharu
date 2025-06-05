@@ -7,14 +7,14 @@ import './WelcomePage.css';
 const topics = [
   { key: 'festival', icon: '/fruit1.png', label: '축제' },
   { key: 'steam', icon: '/fruit2.png', label: '스팀게임' },
-  { key: 'lineage', icon: '/fruit3.png', label: '리니지2M' },
+  { key: 'l2m', icon: '/fruit3.png', label: '리니지2M' },
   { key: 'stock', icon: '/fruit4.png', label: '주식' },
 ];
 // 주제별 코멘트
 const topicCommentMap: { [key: string]: string } = {
   festival: '축제봇입니다.',
   steam: '스팀게임봇입니다.',
-  lineage: '리니지2M봇입니다.',
+  l2m: '리니지2M봇입니다.',
   stock: '주식봇입니다.',
 };
 

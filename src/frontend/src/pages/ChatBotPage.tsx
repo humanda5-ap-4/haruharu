@@ -40,6 +40,8 @@ const ChatBotPage: React.FC = () => {
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const didRun = useRef(false);
 
+
+
   // 3. messages가 바뀔 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
@@ -81,24 +83,29 @@ const ChatBotPage: React.FC = () => {
     typeNextChar();
   };
 
-  // 7. 메시지 전송
-  const sendMessage = async () => {
-    if (!userInput.trim() || isLoading) return;
+// 7. 메시지 전송   수정사항: intent 를  topic 으로 추가전송 _ HJ
+const sendMessage = async () => {
+  if (!userInput.trim() || isLoading) return;
 
-    setIsLoading(true);
-    setMessages(prev => [...prev, { type: 'user', text: userInput }]);
+  setIsLoading(true);
+  setMessages(prev => [...prev, { type: 'user', text: userInput }]);
 
-    try {
-      const res = await axios.post('http://localhost:8000/chat', { query: userInput });
-      showTypingEffect(res.data?.answer);
-    } catch {
-      showTypingEffect('오류가 발생했습니다.');
-    } finally {
-      setUserInput('');
-      setIsLoading(false);
-      removeMsgQuery();
-    }
-  };
+  try {
+    console.log("Sending message with topic (fixed_intent):", topic);  // 수정
+    const res = await axios.post('http://localhost:8000/chat', {
+      query: userInput,
+      fixed_intent: topic   // 여기
+    });
+    showTypingEffect(res.data?.answer);
+  } catch {
+    showTypingEffect('오류가 발생했습니다.');
+  } finally {
+    setUserInput('');
+    setIsLoading(false);
+    removeMsgQuery();
+  }
+};
+
 
   // 8. 엔터키 적용
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -126,7 +133,7 @@ const ChatBotPage: React.FC = () => {
       setIsLoading(true);
       setMessages(prev => [...prev, { type: 'user', text: initialMessage }]);
       try {
-        const res = await axios.post('http://localhost:8000/chat', { query: initialMessage });
+        const res = await axios.post('http://localhost:8000/chat', { query: initialMessage, fixed_intent: topic }); // 여기도 fixed_intent 추가
         showTypingEffect(res.data?.answer);
       } catch {
         showTypingEffect('오류가 발생했습니다.');

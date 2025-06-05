@@ -1,4 +1,8 @@
 # backend/app/routes/chat.py
+from fastapi import APIRouter, Query # 프론트 주제 연결용 
+from typing import List, Optional
+
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 from common.nlu_engine import NLUEngine
@@ -18,12 +22,14 @@ INTENT_HANDLER = {
     "common": handle_common,        # added  17 ~ 22 
     "stock": handle_stock_intent, #
     "lineage2": handle_lineage2_intent,
-    "l2m": handle_lineage2_intent,
+    
     "steam": handle_steam_intent,           # 
     "festival": handle_festival
     }
 class ChatRequest(BaseModel):
     query: str
+    topic: Optional[str] = None
+
 
 class ChatResponse(BaseModel):
     intent: str
@@ -31,13 +37,16 @@ class ChatResponse(BaseModel):
     answer: str
 
 @router.post("/chat", response_model=ChatResponse)
-def chat(req: ChatRequest):
-    intent = NLUEngine.classify_intent(req.query)
-    entities = NLUEngine.extract_entities(req.query)
+def chat(req: ChatRequest, topic: str = Query(default=None)):
+    if topic:
+        intent = topic  # 프론트에서 넘긴 topic을 그대로 인텐트로 사용
+        entities = NLUEngine.extract_entities(req.query)
+    else:
+        intent = NLUEngine.classify_intent(req.query)
+        entities = NLUEngine.extract_entities(req.query)
 
     # 디버깅용 출력
     print(f"[DEBUG] Intent: {intent}")
-
     print(f"[DEBUG] Entities: {[e.__dict__ for e in entities]}")
 
     handler = INTENT_HANDLER.get(intent, handle_common)

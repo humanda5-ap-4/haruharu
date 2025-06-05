@@ -80,7 +80,16 @@
   { "text": "10강 아이템들만 시세 보여줘", "intent": "l2m" },
   { "text": "리니지2M에서 지금 제일 인기 있는 아이템 알려줘", "intent": "l2m" },
   { "text": "마법검 7강 가격 추세 좀 알려줘", "intent": "l2m" },
+  { "text": "바츠01서버 핸드 오브 카브리오 최저가 보여줘", "intent": "l2m" },
+  { "text": "데포로쥬01서버 엘븐 소드 가격 알려줘", "intent": "l2m" },
+  { "text": "리니지 아이템 시세 좀 알려줘", "intent": "l2m" },
+  { "text": "리니지2m 무기값 확인하고 싶어", "intent": "l2m" },
+  { "text": "리니지 서버별 인기 아이템이 뭐야?", "intent": "l2m" },
+  { "text": "리니지2m 시세 알려줘", "intent": "l2m" },
 
+
+
+  
   { "text": "삼성전자 기본 시세 알려줘", "intent": "stock" },
   { "text": "오늘의 국내 주식 시세 어떻게 돼?", "intent": "stock" },
   { "text": "LG화학 주가 알려줘", "intent": "stock" },

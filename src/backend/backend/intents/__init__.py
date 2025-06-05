@@ -2,6 +2,7 @@ from . import festival, steam,common, stock , l2m
 
 INTENT_HANDLER = {
     "festival_query": festival.handle,
+    "festival": festival.handle,
     "외부활동": festival.handle,
     "steam": steam.handle,
     "스팀게임": steam.handle,
