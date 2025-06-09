@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import List
 from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification
 import pathlib
+from typing import List, Dict
 
 @dataclass
 class Entity:
@@ -59,3 +60,19 @@ class TransformerEntityMatcher:
                     end=e["end"]
                 ))
         return entities
+    def extract_for_intent(self, text: str) -> List[Dict[str, str]]:
+        entities = self.extract(text)
+        # handle_stock_intent가 기대하는 dict 리스트 형태로 변환
+        return [{"type": e.type, "value": e.value} for e in entities]
+    
+
+
+# ITEM_KEYWORDS = ["진명황의 집행검", "데스 나이트 소드", "엘븐 소드", "핸드 오브 카브리오", "제왕의 집행검", "마검 발록", "사신의 장궁", "마력의 단검", "신성한 장검", "크로노스의 지팡이", "마력의 지팡이", "카브리오의 양손검", "용사의 장검", "투사의 크로우", "다크 엘븐 보우", "진노의 도끼", "영웅의 활", "혈검 아수라", "지배자의 활", "비전의 지팡이"]
+
+# def keyword_entity_matcher(text: str):
+#     entities = []
+#     for item in ITEM_KEYWORDS:
+#         if item in text:
+#             start = text.index(item)
+#             entities.append(Entity(type="ITEM", value=item, start=start, end=start + len(item)))
+#     return entities

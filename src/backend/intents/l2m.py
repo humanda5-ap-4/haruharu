@@ -1,42 +1,39 @@
 from backend.intents.l2m_utils import get_server_id_by_name
 from backend.intents.l2m_api import get_item_price_info
-from backend.common.response import generate_response
-import re
+# from backend.common.response import generate_response  # 임시로 주석 처리
 
 PROMPT_TEMPLATE = """
-다음은 리니지2M '{server}' 서버의 '{item}' 아이템 시세 정보입니다:
-
-💰 최저가: {min_price} 아데나  
-📊 평균가: {avg_price} 아데나  
-📈 최고가: {max_price} 아데나
-
-해당 아이템의 가치나 활용도에 대한 간단한 정보도 함께 알려줘.
+    
+    다음은 리니지2M '{server}' 서버의 '{item}' 아이템 시세 정보입니다:
+    최저가: {min_price} 다이아
+    평균가: {avg_price} 다이아
+    최고가: {max_price} 다이아
 """
-
 SUMMARY_TEMPLATE = """
 '{item}'에 대한 전체 서버 시세입니다 (상위 {count}개):
 
 {lines}
 """
 
-def handle(query: str, entities: list) -> str:
-    def merge_wordpieces(entities, target_type):
-        merged = []
-        buffer = ""
-        for e in entities:
-            if e.type == target_type:
-                if e.value.startswith("##"):
-                    buffer += e.value[2:]
-                else:
-                    if buffer:
-                        merged.append(buffer)
-                    buffer = e.value
-        if buffer:
-            merged.append(buffer)
-        return merged
+def merge_entities_by_type(entities, target_type):
+    merged = []
+    buffer = []
+    for e in entities:
+        if e.type == target_type:
+            buffer.append(e.value)
+        else:
+            if buffer:
+                merged.append(" ".join(buffer))
+                buffer = []
+    if buffer:
+        merged.append(" ".join(buffer))
+    return merged
 
-    server_entities = merge_wordpieces(entities, "SERVER")
-    item_entities = merge_wordpieces(entities, "ITEM")
+def handle(query: str, entities: list) -> str:
+    print(f"[DEBUG] 원본 엔티티: {[{'type': e.type, 'value': e.value} for e in entities]}")
+
+    server_entities = merge_entities_by_type(entities, "SERVER")
+    item_entities = merge_entities_by_type(entities, "ITEM")
 
     server = "".join(server_entities) if server_entities else None
     item = " ".join(item_entities) if item_entities else None
@@ -56,6 +53,8 @@ def handle(query: str, entities: list) -> str:
             return f"[BOT] 서버 '{server}' 를 찾을 수 없습니다."
 
     response = get_item_price_info(item, server_id)
+    print(f"[DEBUG] API 응답: {response}")
+
     items = response.get("contents", [])
     if not items:
         return f"[BOT] '{item}'에 대한 시세 정보를 찾을 수 없습니다."
@@ -75,14 +74,15 @@ def handle(query: str, entities: list) -> str:
             avg_price=avg_price,
             max_price=max_price if max_price != "N/A" else "데이터 없음"
         )
-        return generate_response(prompt.strip())
+        # generate_response 대신 바로 리턴 (디버그용)
+        return prompt.strip()
     else:
         summary_lines = []
-        for i in items[:10]:  # 상위 10개만
-            server = i.get("server_name", "알 수 없음")
+        for i in items[:10]:
+            server_name = i.get("server_name", "알 수 없음")
             min_p = i.get("now_min_unit_price", "N/A")
             avg_p = i.get("avg_unit_price", "N/A")
-            summary_lines.append(f"{server} - 💰 최저가: {min_p} / 📊 평균가: {avg_p}")
+            summary_lines.append(f"{server_name} -  최저가: {min_p} /  평균가: {avg_p}")
 
         if not summary_lines:
             return f"[BOT] '{item}'에 대한 전체 서버 시세 정보를 찾을 수 없습니다."
@@ -92,5 +92,5 @@ def handle(query: str, entities: list) -> str:
             count=len(summary_lines),
             lines="\n".join(summary_lines)
         )
-        return generate_response(summary.strip())
-
+        # generate_response 대신 바로 리턴 (디버그용)
+        return summary.strip()

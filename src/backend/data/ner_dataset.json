@@ -1,5 +1,86 @@
 [
   {
+    "tokens": ["삼성전자", "외국인", "투자", "동향", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["카카오", "기관", "매수", "비율", "궁금해"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["네이버", "개인투자자", "매도", "현황", "보고싶어"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["SK하이닉스", "외국인", "매수", "수량", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["현대차", "기관", "투자", "동향", "분석해줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["기아차", "개인투자자", "투자", "현황", "보고싶어"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["LG화학", "외국인", "지분", "변동", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["셀트리온", "기관", "매매", "량", "확인해줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["삼성바이오로직스", "개인투자자", "매수", "추이", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["카카오", "외국인", "투자", "추이", "궁금해"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["삼성전자", "외국인", "투자", "비율", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["현대자동차", "기관", "매수", "동향", "궁금해"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["LG에너지솔루션", "개인투자자", "투자", "규모", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["SK하이닉스", "외국인", "지분", "변동", "확인해"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["포스코", "기관", "투자", "추이", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["기아", "개인투자자", "매수", "비율", "궁금해"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["셀트리온", "외국인", "투자", "현황", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["한국전력", "기관", "매도", "동향", "궁금해"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["LG화학", "외국인", "투자", "규모", "확인해"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  {
+    "tokens": ["현대모비스", "개인투자자", "투자", "동향", "알려줘"],
+    "ner_tags": ["B-ORG", "B-INVESTOR_TYPE", "O", "O", "O"]
+  },
+  
+  {
     "tokens": ["삼성전자", "주가", "변동이", "궁금해"],
     "ner_tags": ["B-ORG", "O", "O", "O"]
   },
@@ -4201,7 +4282,7 @@
     "ner_tags": ["B-SERVER", "O", "B-ITEM", "B-ITEM", "O", "O"]
   },
   {
-    "tokens": ["아덴01에서", "엘븐", "롱보우", "검색해줘"],
+    "tokens": ["아덴01에서", "엘븐", "롱소드", "검색해줘"],
     "ner_tags": ["O", "B-ITEM", "B-ITEM", "O"]
   },
   {
@@ -4240,6 +4321,15 @@
     "tokens": ["바츠01에서", "용사의", "목걸이", "검색해줘"],
     "ner_tags": ["O", "B-ITEM", "B-ITEM", "O"]
   },
+  {
+    "tokens": ["군터01에서", "엘븐롱소드", "시세"],
+    "ner_tags" : ["O", "B-ITEM", "O"]
+  },
+  {
+    "tokens": ["군터01에서", "엘븐 롱소드", "검색해줘"],
+    "ner_tags" : ["O", "B-ITEM", "O"]
+  },
+  
   {
     "tokens": ["지그하르트01", "마법사의", "귀걸이", "등록되었어?"],
     "ner_tags": ["B-SERVER", "B-ITEM", "B-ITEM", "O"]
@@ -4315,6 +4405,114 @@
   {
     "tokens": ["바츠01", "서버", "아이템", "마법사의", "귀걸이", "시세", "좀"],
     "ner_tags": ["B-SERVER", "O", "O", "B-ITEM", "B-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["바츠01에서", "바살트", "캐논", "구매", "가능해?"], 
+    "ner_tags": ["O", "B-ITEM", "I-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["파라슈", "상점", "최저가", "얼마야?"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["우콘바사라", "현재", "거래소", "가격", "알려줘"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O", "O"]
+  },
+  {
+    "tokens": ["터미누스", "에스트", "팔고", "싶어"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["지금", "바살트", "캐논", "시세", "얼마야?"], 
+    "ner_tags": ["O", "B-ITEM", "I-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["파라슈", "어디서", "사는지", "알려줘"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["우콘바사라", "강화", "비용", "얼마임?"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["터미누스", "에스트", "거래", "가능해?"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["바살트", "캐논", "최고가", "좀", "확인해줘"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["파라슈", "지금", "얼마에", "팔려?"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["우콘바사라", "옵션", "정보", "있어?"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["터미누스", "에스트", "얼마야"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O"]
+  },
+  {
+    "tokens": ["바살트", "캐논", "지금", "거래", "돼?"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["파라슈", "요즘", "시세", "어때?"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["우콘바사라", "이거", "좋은", "아이템이야?"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["터미누스", "에스트", "강화", "성공률", "몇퍼야?"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["바살트", "캐논", "얼마에", "사는게", "좋아?"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["파라슈", "구매할", "수", "있을까?"], 
+    "ner_tags": ["B-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["우콘바사라", "가격", "비교해줘"], 
+    "ner_tags": ["B-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["터미누스", "에스트", "구매", "정보", "있니?"], 
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["엘븐", "소드", "시세", "알려줘"],
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["나이트", "소드", "지금", "가격이", "얼마야"],
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["코볼트", "전사의검", "어디서", "구할", "수", "있어"],
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O", "O"]
+  },
+  {
+    "tokens": ["코볼트", "전사의검", "최저가", "좀", "확인해줘"],
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O", "O"]
+  },
+  {
+    "tokens": ["엘븐", "소드", "이랑", "바살트", "캐논", "비교해줘"],
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "B-ITEM", "I-ITEM", "O"]
+  },
+  {
+    "tokens": ["나이트", "소드", "성능", "어때"],
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "O"]
+  },
+  {
+    "tokens": ["바살트", "캐논", "이나", "터미누스", "에스트", "뭐가", "좋아"],
+    "ner_tags": ["B-ITEM", "I-ITEM", "O", "B-ITEM", "I-ITEM", "O", "O"]
   },
   {
     "tokens": ["데포로쥬02", "서버에", "마족의", "검", "얼마야?"],

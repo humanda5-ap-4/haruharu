@@ -82,6 +82,21 @@ const ChatBotPage: React.FC = () => {
     typeNextChar();
   };
 
+  // === 누락 엔티티 체크 함수 ===
+  const getMissingEntities = (intent: string, entities: any[]) => {
+    // intent별 필수 엔티티 정의 (백엔드에서 내려주는 entities의 type 값은 반드시 일치)
+    const required: { [key: string]: string[] } = {
+      festival_info: ['LOCATION', 'DATE', 'EVENT'],
+      steam_info: ['GAME'],
+      lineage_info: ['SERVER', 'ITEM'],
+      stock_info: ['STOCK', 'COMPANY']
+
+    };
+    if (!intent || !required[intent]) return [];
+    const entityTypes = entities.map((e: any) => e.type);
+    return required[intent].filter(type => !entityTypes.includes(type));
+  };
+
   // 7. 메시지 전송
   const sendMessage = async () => {
     if (!userInput.trim() || isLoading) return;
@@ -91,7 +106,26 @@ const ChatBotPage: React.FC = () => {
 
     try {
       const res = await axios.post('/chat', { query: userInput });
-      showTypingEffect(res.data?.answer);
+      console.log("백엔드 entities:", res.data.entities);
+      // intent와 entities를 내부 로직에서 활용
+      const intent = res.data?.intent;
+      const entities = res.data?.entities || [];
+      const missingEntities = getMissingEntities(intent, entities);
+
+      if (missingEntities.length > 0) {
+        // 경고 메시지 먼저 챗봇 메시지로 추가
+        setMessages(prev => [
+          ...prev,
+          {
+            type: 'bot',
+            text: `경고: ${missingEntities.join(', ')} 정보가 누락되었습니다. 최신/기본값 기준으로 안내드릴게요.`
+          }
+        ]);
+        // 답변은 경고 다음에 타자 효과로 출력
+        setTimeout(() => showTypingEffect(res.data?.answer), 400);
+      } else {
+        showTypingEffect(res.data?.answer);
+      }
     } catch {
       showTypingEffect('오류가 발생했습니다.');
     } finally {
@@ -115,8 +149,8 @@ const ChatBotPage: React.FC = () => {
     setMessages([]);
   };
 
-  
 
+  
   // 초기 메시지 처리
   useEffect(() => {
     if (didRun.current) return;
@@ -128,7 +162,22 @@ const ChatBotPage: React.FC = () => {
       setMessages(prev => [...prev, { type: 'user', text: initialMessage }]);
       try {
         const res = await axios.post('/chat', { query: initialMessage });
-        showTypingEffect(res.data?.answer);
+        const intent = res.data?.intent;
+        const entities = res.data?.entities || [];
+        const missingEntities = getMissingEntities(intent, entities);
+
+        if (missingEntities.length > 0) {
+          setMessages(prev => [
+            ...prev,
+            {
+              type: 'bot',
+              text: `경고: ${missingEntities.join(', ')} 정보가 누락되었습니다. 최신/기본값 기준으로 안내드릴게요.`
+            }
+          ]);
+          setTimeout(() => showTypingEffect(res.data?.answer), 400);
+        } else {
+          showTypingEffect(res.data?.answer);
+        }
       } catch {
         showTypingEffect('오류가 발생했습니다.');
       } finally {

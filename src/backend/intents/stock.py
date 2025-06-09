@@ -1,7 +1,7 @@
 # intents/stock.py
 
 from backend.intents.stock_utils import get_stock_code_by_name, get_name_by_stock_code
-from backend.intents.stock_api import get_access_token, get_stock_info
+from backend.intents.stock_api import get_access_token, get_stock_info, request_new_token
 from backend.common.response import generate_response
 
 
@@ -17,8 +17,44 @@ PROMPT_TEMPLATE = """
 📰 관련 뉴스 및 이슈가 있다면 간단히 정리해줘.
 """
 
+
+PROMPT_TEMPLATE_FOREIGN = """
+다음은 {company} ({code})의 투자자 보유 관련 정보입니다:
+
+외국인 보유율: {foreign_rate}%
+기관 보유율: {institution_rate}%
+현재가: {price}원
+
+외국인과 기관의 최근 투자 흐름을 요약해서 알려줘.
+"""
+
+
+# 외국인 ,기관 
+PROMPT_TEMPLATE_FOREIGN = """
+다음은 {company} ({code})의 투자자 보유 관련 정보입니다:
+
+외국인 보유율: {foreign_rate}%
+기관 보유율: {institution_rate}%
+현재가: {price}원
+
+외국인과 기관의 최근 투자 흐름을 요약해서 알려줘.
+"""
+
+
+def refresh_token_message():
+    token = request_new_token()
+    if token:
+        return "✅ 주식 API 토큰이 성공적으로 재발행 되었습니다."
+    else:
+        return "❌ 토큰 재발행에 실패했습니다. 나중에 다시 시도해 주세요."
+    
 # 🎯 메인 핸들러
 def handle(query: str, entities: list) -> str:
+
+    # 토큰 재발행 명령어 감지
+    if "토큰 재발행" in query or "토큰 갱신" in query:
+        return refresh_token_message()
+
     def merge_wordpieces(entities):
         merged = []
         buffer = ""
@@ -69,6 +105,21 @@ def handle(query: str, entities: list) -> str:
     price = info.get("stck_prpr", "정보 없음")
     diff = info.get("prdy_vrss", "정보 없음")
     rate = info.get("prdy_ctrt", "정보 없음")
+
+ # 외국인, 기관 관련 문의 판단
+    keywords = ["외국인", "기관", "보유율", "외인"]
+    if any(k in query for k in keywords):
+        foreign_rate = get_foreign_rate(code, token)
+        institution_rate = get_institution_rate(code, token)
+
+        prompt = PROMPT_TEMPLATE_FOREIGN.format(
+            company=company,
+            code=code,
+            foreign_rate=foreign_rate,
+            institution_rate=institution_rate,
+            price=price,
+        )
+        return generate_response(prompt.strip())
 
     # print(f"\n📈 {company} ({code})")
     # print(f"💰 현재가: {price}원")

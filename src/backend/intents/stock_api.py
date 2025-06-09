@@ -26,15 +26,20 @@ def get_access_token() -> str:
         try:
             with open(TOKEN_FILE, "r") as f:
                 token_data = json.load(f)
-            if time.time() < token_data["expires_at"] - TOKEN_EXPIRE_BUFFER:
+            print(f"✅ 토큰 파일에서 읽음: {token_data}")
+            if time.time() < token_data.get("expires_at", 0) - TOKEN_EXPIRE_BUFFER:
                 print("✅ 기존 토큰 재사용")
                 return token_data["access_token"]
+            else:
+                print("⚠️ 토큰 만료 또는 곧 만료")
         except Exception as e:
             print("⚠️ 토큰 파일 읽기 실패:", e)
-
+    else:
+        print("⚠️ 토큰 파일이 존재하지 않음")
     return request_new_token()
 
 
+# 새토큰 발급  토큰불러오기 수정 _ HJ 
 # ✅ 새 토큰 발급
 def request_new_token() -> str:
     url = "https://openapi.koreainvestment.com:9443/oauth2/tokenP"
@@ -47,14 +52,16 @@ def request_new_token() -> str:
 
     res = requests.post(url, headers=headers, data=json.dumps(data))
     if res.status_code == 200:
-        token = res.json().get("access_token")
+        resp_json = res.json()
+        token = resp_json.get("access_token")
+        expires_in = resp_json.get("expires_in", TOKEN_VALID_SECONDS)
         if token:
             with open(TOKEN_FILE, "w") as f:
                 json.dump({
                     "access_token": token,
-                    "expires_at": time.time() + TOKEN_VALID_SECONDS
+                    "expires_at": time.time() + expires_in
                 }, f)
-            print("✅ 새 토큰 발급 완료")
+            print(f"✅ 새 토큰 발급 완료, 만료까지 {expires_in}초")
             return token
     print("❌ 토큰 발급 실패")
     print(res.text)
@@ -77,10 +84,12 @@ def get_stock_info(stock_code: str, access_token: str) -> dict:
 
     res = requests.get(url, headers=headers, params=params)
     if res.status_code != 200:
-        print(f"❌ 주식 정보 조회 실패 ({stock_code})")
+        print(f"❌ 주식 정보 조회 실패 ({stock_code}) , 채팅창에 토큰 재발행 이라고 검색해주세요 ")
         print(res.text)
         return {}
     return res.json().get("output", {})
+
+
 
 
 # 🧪 실행 테스트
@@ -113,6 +122,10 @@ if __name__ == "__main__":
     price = stock_data.get("stck_prpr", "N/A")
     change = stock_data.get("prdy_vrss", "0")
     rate = stock_data.get("prdy_ctrt", "0")
+
+    foreign_rate = get_foreign_rate(stock_code, token)
+    institution_rate = get_institution_rate(stock_code, token)
+
 
     print(f"📈 {display_name} ({stock_code})")
     print(f"💰 현재가: {price}원")

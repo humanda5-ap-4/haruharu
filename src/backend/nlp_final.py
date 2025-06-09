@@ -22,6 +22,7 @@ from db import engine_db
 import ollama
 from transformers import pipeline
 
+
 # 경로 설정
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
